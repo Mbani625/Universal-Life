@@ -12,10 +12,10 @@ document.addEventListener('DOMContentLoaded', () => {
     initializePlayers(2); // Default to 1v1
 });
 
+// Set game mode and adjust life settings
 function setGameMode(mode) {
     currentGameMode = mode;
 
-    // Set life totals and increments based on selected mode
     switch (mode) {
         case 'mtg':
             startingLifeTotal = 20;
@@ -29,16 +29,12 @@ function setGameMode(mode) {
             startingLifeTotal = 8000;
             incrementValue = 50;
             break;
-        case 'custom':
-            startingLifeTotal = 20;
-            incrementValue = 0; // No buttons for increment/decrement in custom mode
-            break;
     }
 
-    // Reinitialize players with new settings
     initializePlayers(document.getElementById('players-container').children.length || 2);
 }
 
+// Initialize players
 function initializePlayers(playerCount) {
     const playersContainer = document.getElementById('players-container');
     playersContainer.innerHTML = ''; // Clear existing players
@@ -48,6 +44,7 @@ function initializePlayers(playerCount) {
     }
 }
 
+// Create individual player counter
 function createPlayerCounter(playerNumber) {
     const playerDiv = document.createElement('div');
     playerDiv.classList.add('player');
@@ -61,49 +58,36 @@ function createPlayerCounter(playerNumber) {
     lifePoints.textContent = startingLifeTotal;
     playerDiv.appendChild(lifePoints);
 
-    if (currentGameMode === 'custom') {
-        // Custom mode: add scroll input for life points
-        const lifeInput = document.createElement('input');
-        lifeInput.type = 'number';
-        lifeInput.value = startingLifeTotal;
-        lifeInput.classList.add('custom-life-input');
-        lifeInput.oninput = () => {
-            lifePoints.textContent = lifeInput.value;
-        };
+    // Add control buttons for modes
+    const controlButtons = document.createElement('div');
+    controlButtons.classList.add('control-buttons');
 
-        // Clear the life points text and add scroll input only
-        playerDiv.innerHTML = '';
-        playerDiv.appendChild(playerName);
-        playerDiv.appendChild(lifeInput);
-    } else {
-        // Add control buttons for other modes
-        const controlButtons = document.createElement('div');
-        controlButtons.classList.add('control-buttons');
+    const addButton = document.createElement('button');
+    addButton.textContent = '+';
+    addButton.onclick = () => adjustLifePoints(lifePoints, incrementValue);
 
-        const addButton = document.createElement('button');
-        addButton.textContent = '+';
-        addButton.onclick = () => adjustLifePoints(lifePoints, incrementValue);
+    const subtractButton = document.createElement('button');
+    subtractButton.textContent = '-';
+    subtractButton.onclick = () => adjustLifePoints(lifePoints, -incrementValue);
 
-        const subtractButton = document.createElement('button');
-        subtractButton.textContent = '-';
-        subtractButton.onclick = () => adjustLifePoints(lifePoints, -incrementValue);
-
-        controlButtons.appendChild(addButton);
-        controlButtons.appendChild(subtractButton);
-        playerDiv.appendChild(controlButtons);
-    }
+    controlButtons.appendChild(addButton);
+    controlButtons.appendChild(subtractButton);
+    playerDiv.appendChild(controlButtons);
 
     // Append player to container
     document.getElementById('players-container').appendChild(playerDiv);
 }
 
+// Update life points with pulse animation
 function adjustLifePoints(lifePointsElement, change) {
     let currentLife = parseInt(lifePointsElement.textContent);
     currentLife += change;
     lifePointsElement.textContent = Math.max(0, currentLife);
+    lifePointsElement.classList.add('pulse');
+    setTimeout(() => lifePointsElement.classList.remove('pulse'), 300);
 }
 
-// Countdown and random player selection logic
+// Countdown and random player selection with highlight
 function startRandomPlayerCountdown() {
     const countdownDisplay = document.getElementById('countdown-display');
     countdownDisplay.style.opacity = 1;
@@ -111,7 +95,7 @@ function startRandomPlayerCountdown() {
     // Darken the player containers
     document.querySelectorAll('.player').forEach(player => player.classList.add('darkened'));
 
-    let countdown = 3;
+    let countdown = Math.floor(Math.random() * 3) + 3;  // Random countdown between 3 and 5 seconds
     countdownDisplay.textContent = countdown;
 
     const interval = setInterval(() => {
@@ -125,13 +109,17 @@ function startRandomPlayerCountdown() {
     }, 1000);
 }
 
+// Select a random player to start and highlight their container
 function selectRandomPlayer() {
-    const players = document.querySelectorAll('.player h3');
+    const players = document.querySelectorAll('.player');
     const randomIndex = Math.floor(Math.random() * players.length);
-    const startingPlayer = players[randomIndex].textContent;
+    const startingPlayer = players[randomIndex];
+
+    startingPlayer.classList.add('selected');
+    setTimeout(() => startingPlayer.classList.remove('selected'), 3000);
 
     const countdownDisplay = document.getElementById('countdown-display');
-    countdownDisplay.textContent = `${startingPlayer} Starts!`;
+    countdownDisplay.textContent = `${startingPlayer.querySelector('h3').textContent} Starts!`;
 
     // Keep the display for 3 seconds, then fade out and reset the player containers
     setTimeout(() => {

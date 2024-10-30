@@ -88,9 +88,9 @@ body {
 #players-container {
     display: grid;
     gap: 20px;
-    grid-template-columns: 1fr;
-    width: 100%;
-    max-width: 600px;
+    grid-template-columns: repeat(2, 1fr); /* Two columns */
+    width: 80%; /* 80% width on large screens */
+    max-width: 1200px;
     text-align: center;
     position: relative;
 }
@@ -179,63 +179,36 @@ body {
     transform: scale(0.95);
 }
 
-/* Custom mode styling */
-.custom-life-input {
-    appearance: none;
-    width: 100%;
-    padding: 12px;
-    background-color: #d9e2ec;
-    border-radius: 12px;
-    text-align: center;
-    font-size: 28px;
-    font-weight: bold;
-    color: #333333;
+/* Pulse animation for life points adjustment */
+@keyframes pulse {
+    0% { transform: scale(1); color: #4a4a4a; }
+    50% { transform: scale(1.1); color: #2c3e50; }
+    100% { transform: scale(1); color: #4a4a4a; }
 }
 
-/* Responsive media queries */
+.life-points.pulse {
+    animation: pulse 0.3s ease-out;
+}
 
-/* Small screens (phones) */
+/* Highlighted player after random selection */
+.player.selected {
+    background-color: #ffeb3b;
+    transition: background-color 0.3s ease-out;
+}
+
+/* Medium screens (tablets in landscape) */
+@media (max-width: 900px) {
+    #players-container {
+        width: 90%; /* Scale to 90% width */
+        grid-template-columns: repeat(2, 1fr); /* Still two columns */
+    }
+}
+
+/* Small screens (phones in landscape and portrait) */
 @media (max-width: 600px) {
     #players-container {
-        grid-template-columns: 1fr;
+        width: 100%; /* Scale to full width on small screens */
+        grid-template-columns: 1fr; /* Stack vertically */
         padding: 10px;
-    }
-    .player {
-        padding: 5px 10px;
-        font-size: 18px;
-    }
-    .life-points {
-        font-size: 24px;
-    }
-}
-
-/* Medium screens (tablets) */
-@media (min-width: 601px) and (max-width: 900px) {
-    #players-container {
-        grid-template-columns: repeat(2, 1fr);
-        max-width: 80%;
-        padding: 20px;
-    }
-    .player {
-        padding: 10px 20px;
-    }
-    .life-points {
-        font-size: 30px;
-    }
-}
-
-/* Large screens (desktops and larger tablets) */
-@media (min-width: 901px) {
-    #players-container {
-        grid-template-columns: repeat(2, 1fr);
-        max-width: 1200px;
-        padding: 20px;
-    }
-    .player {
-        padding: 20px 40px;
-        font-size: 24px;
-    }
-    .life-points {
-        font-size: 42px;
     }
 }
