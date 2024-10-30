@@ -103,3 +103,39 @@ function adjustLifePoints(lifePointsElement, change) {
     lifePointsElement.textContent = Math.max(0, currentLife);
 }
 
+// Countdown and random player selection logic
+function startRandomPlayerCountdown() {
+    const countdownDisplay = document.getElementById('countdown-display');
+    countdownDisplay.style.opacity = 1;
+
+    // Darken the player containers
+    document.querySelectorAll('.player').forEach(player => player.classList.add('darkened'));
+
+    let countdown = 3;
+    countdownDisplay.textContent = countdown;
+
+    const interval = setInterval(() => {
+        countdown--;
+        if (countdown > 0) {
+            countdownDisplay.textContent = countdown;
+        } else {
+            clearInterval(interval);
+            selectRandomPlayer();
+        }
+    }, 1000);
+}
+
+function selectRandomPlayer() {
+    const players = document.querySelectorAll('.player h3');
+    const randomIndex = Math.floor(Math.random() * players.length);
+    const startingPlayer = players[randomIndex].textContent;
+
+    const countdownDisplay = document.getElementById('countdown-display');
+    countdownDisplay.textContent = `${startingPlayer} Starts!`;
+
+    // Keep the display for 3 seconds, then fade out and reset the player containers
+    setTimeout(() => {
+        countdownDisplay.style.opacity = 0;
+        document.querySelectorAll('.player').forEach(player => player.classList.remove('darkened'));
+    }, 3000);
+}

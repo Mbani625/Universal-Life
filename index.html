@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Life Point Tracker</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -21,12 +22,19 @@
                 <button onclick="initializePlayers(2)">1v1</button>
                 <button onclick="initializePlayers(4)">4 Player</button>
             </div>
+            <!-- Divider line above the Randomize button -->
+            <hr class="divider">
+            <button id="start-player-button" onclick="startRandomPlayerCountdown()">Randomize Starting Player</button>
         </div>
     </div>
 
     <!-- Centered container for player counters -->
     <div id="players-container"></div>
 
+    <!-- Countdown display for starting player -->
+    <div id="countdown-display"></div>
+
     <script src="script.js"></script>
 </body>
 </html>
+
