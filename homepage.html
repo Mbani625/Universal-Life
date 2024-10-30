@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Life Point Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Sidebar for game mode and player setup -->
+    <div id="sidebar">
+        <button id="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+        <div id="sidebar-content">
+            <div id="game-mode-buttons">
+                <button onclick="setGameMode('mtg')">Magic the Gathering</button>
+                <button onclick="setGameMode('commander')">Commander</button>
+                <button onclick="setGameMode('yugioh')">Yu-Gi-Oh</button>
+                <button onclick="setGameMode('custom')">Custom</button>
+            </div>
+            <div id="player-setup">
+                <button onclick="initializePlayers(2)">1v1</button>
+                <button onclick="initializePlayers(4)">4 Player</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Centered container for player counters -->
+    <div id="players-container"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
