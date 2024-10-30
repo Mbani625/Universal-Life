@@ -43,8 +43,8 @@ body {
     background-color: #a0c1d1;
     border: none;
     color: #333;
-    font-size: 24px;
-    padding: 5px 10px;
+    font-size: 28px; /* Increased font size by 15% */
+    padding: 6px 12px; /* Increased padding by 15% */
     border-radius: 5px;
     cursor: pointer;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
@@ -59,7 +59,8 @@ body {
     display: block;
     width: 100%;
     margin-bottom: 10px;
-    padding: 10px;
+    padding: 12px; /* Increased padding by 15% */
+    font-size: 17px; /* Increased font size by 15% */
     background-color: #a0c1d1;
     color: #333333;
     border: none;
@@ -122,9 +123,9 @@ body {
 }
 
 .control-buttons button {
-    width: 50px;
-    height: 50px;
-    font-size: 24px;
+    width: 57.5px; /* Increased width by 15% */
+    height: 57.5px; /* Increased height by 15% */
+    font-size: 28px; /* Increased font size by 15% */
     font-weight: bold;
     cursor: pointer;
     color: #333333;
@@ -148,11 +149,11 @@ body {
 .custom-life-input {
     appearance: none;
     width: 100%;
-    padding: 10px;
+    padding: 12px; /* Increased padding by 15% */
     background-color: #d9e2ec;
     border-radius: 12px;
     text-align: center;
-    font-size: 24px;
+    font-size: 28px; /* Increased font size by 15% */
     font-weight: bold;
     color: #333333;
 }
