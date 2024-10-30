@@ -179,17 +179,6 @@ body {
     transform: scale(0.95);
 }
 
-/* Pulse animation for life points adjustment */
-@keyframes pulse {
-    0% { transform: scale(1); color: #4a4a4a; }
-    50% { transform: scale(1.1); color: #2c3e50; }
-    100% { transform: scale(1); color: #4a4a4a; }
-}
-
-.life-points.pulse {
-    animation: pulse 0.3s ease-out;
-}
-
 /* Highlighted player after random selection */
 .player.selected {
     background-color: #ffeb3b;
