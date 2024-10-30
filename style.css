@@ -179,10 +179,6 @@ body {
     background-color: #a5c0d0;
 }
 
-.control-buttons button:active {
-    background-color: #a5c0d0;
-}
-
 /* Highlighted player after random selection */
 .player.selected {
     background-color: #ffeb3b;
