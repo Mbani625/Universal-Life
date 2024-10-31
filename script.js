@@ -1,7 +1,6 @@
 let currentGameMode = 'mtg'; // Default to Magic the Gathering
 let incrementValue = 1;
 let startingLifeTotal = 20;
-let activePlayerDiv = null;
 
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
@@ -44,7 +43,7 @@ function initializePlayers(playerCount) {
     }
 }
 
-// Function to create each player's container with new Coin Flip and Dice Roll buttons
+// Function to create each player's container with updated button structure
 function createPlayerCounter(playerNumber) {
     const playerDiv = document.createElement('div');
     playerDiv.classList.add('player');
@@ -58,14 +57,16 @@ function createPlayerCounter(playerNumber) {
     lifePoints.textContent = startingLifeTotal;
     playerDiv.appendChild(lifePoints);
 
-    // Add control buttons for life point adjustments
+    // Control buttons container
     const controlButtons = document.createElement('div');
     controlButtons.classList.add('control-buttons');
 
+    // Add Life (+) Button
     const addButton = document.createElement('button');
     addButton.textContent = '+';
     addButton.onclick = () => adjustLifePoints(lifePoints, incrementValue);
 
+    // Subtract Life (-) Button
     const subtractButton = document.createElement('button');
     subtractButton.textContent = '-';
     subtractButton.onclick = () => adjustLifePoints(lifePoints, -incrementValue);
@@ -73,19 +74,25 @@ function createPlayerCounter(playerNumber) {
     controlButtons.appendChild(addButton);
     controlButtons.appendChild(subtractButton);
 
-    // Add Coin Flip Button
+    // Coin Flip Button
     const coinFlipButton = document.createElement('button');
-    coinFlipButton.classList.add('icon-button', 'coin-button');
+    coinFlipButton.classList.add('coin-flip-button');
     coinFlipButton.onclick = () => showCoinFlipResult(playerDiv);
 
-    // Add Dice Roll Button
-    const diceRollButton = document.createElement('button');
-    diceRollButton.classList.add('icon-button', 'dice-button');
-    diceRollButton.onclick = () => openDiceModal(playerDiv);
+    // D6 Roll Button
+    const d6Button = document.createElement('button');
+    d6Button.classList.add('dice-button', 'd6-button');
+    d6Button.onclick = () => rollDice(6, playerDiv);
 
-    // Add new buttons to controlButtons container
+    // D20 Roll Button
+    const d20Button = document.createElement('button');
+    d20Button.classList.add('dice-button', 'd20-button');
+    d20Button.onclick = () => rollDice(20, playerDiv);
+
+    // Append all buttons to controlButtons container
     controlButtons.appendChild(coinFlipButton);
-    controlButtons.appendChild(diceRollButton);
+    controlButtons.appendChild(d6Button);
+    controlButtons.appendChild(d20Button);
 
     playerDiv.appendChild(controlButtons);
     document.getElementById('players-container').appendChild(playerDiv);
@@ -97,23 +104,10 @@ function showCoinFlipResult(playerDiv) {
     displayResult(playerDiv, `Coin Flip: ${result}`);
 }
 
-// Open the dice modal and set the active player
-function openDiceModal(playerDiv) {
-    activePlayerDiv = playerDiv;
-    document.getElementById('dice-modal').style.display = 'flex'; // Show modal only on dice button click
-}
-
-// Close the dice modal
-function closeDiceModal() {
-    document.getElementById('dice-modal').style.display = 'none'; // Hide modal
-    activePlayerDiv = null;
-}
-
 // Roll the selected dice (D6 or D20) and display result
-function rollDice(diceType) {
+function rollDice(diceType, playerDiv) {
     const result = Math.floor(Math.random() * diceType) + 1;
-    displayResult(activePlayerDiv, `Dice Roll (D${diceType}): ${result}`);
-    closeDiceModal();
+    displayResult(playerDiv, `Dice Roll (D${diceType}): ${result}`);
 }
 
 // Function to display result under the player's container
@@ -134,15 +128,15 @@ function adjustLifePoints(lifePointsElement, change) {
     lifePointsElement.textContent = Math.max(0, currentLife);
 }
 
-// Randomize starting player with countdown display
+// Start countdown for randomizing player
 function startRandomPlayerCountdown() {
     const countdownDisplay = document.getElementById('countdown-display');
-    countdownDisplay.style.opacity = 1;
+    countdownDisplay.style.opacity = 1; // Make countdown visible
 
-    // Darken other player containers
+    // Darken all player containers
     document.querySelectorAll('.player').forEach(player => player.classList.add('darkened'));
 
-    let countdown = 3; // Countdown starts from 3
+    let countdown = 3; // Set countdown start
     countdownDisplay.textContent = countdown;
 
     const interval = setInterval(() => {
@@ -151,7 +145,7 @@ function startRandomPlayerCountdown() {
             countdownDisplay.textContent = countdown;
         } else {
             clearInterval(interval);
-            selectRandomPlayer();
+            selectRandomPlayer(); // Select player when countdown reaches 0
         }
     }, 1000);
 }
@@ -159,19 +153,21 @@ function startRandomPlayerCountdown() {
 // Function to select and highlight a random player
 function selectRandomPlayer() {
     const players = document.querySelectorAll('.player');
-    const randomIndex = Math.floor(Math.random() * players.length);
+    const randomIndex = Math.floor(Math.random() * players.length); // Pick a random player
     const startingPlayer = players[randomIndex];
 
     // Highlight the selected player
     startingPlayer.classList.add('selected');
-    setTimeout(() => startingPlayer.classList.remove('selected'), 3000);
+    setTimeout(() => startingPlayer.classList.remove('selected'), 3000); // Remove highlight after 3 seconds
 
+    // Display the selected player's name
     const countdownDisplay = document.getElementById('countdown-display');
     countdownDisplay.textContent = `${startingPlayer.querySelector('h3').textContent} Starts!`;
 
-    // Remove darkening and fade out countdown after 3 seconds
+    // Fade out countdown display and reset player darkening
     setTimeout(() => {
         countdownDisplay.style.opacity = 0;
         document.querySelectorAll('.player').forEach(player => player.classList.remove('darkened'));
     }, 3000);
 }
+
