@@ -133,3 +133,45 @@ function adjustLifePoints(lifePointsElement, change) {
     currentLife += change;
     lifePointsElement.textContent = Math.max(0, currentLife);
 }
+
+// Randomize starting player with countdown display
+function startRandomPlayerCountdown() {
+    const countdownDisplay = document.getElementById('countdown-display');
+    countdownDisplay.style.opacity = 1;
+
+    // Darken other player containers
+    document.querySelectorAll('.player').forEach(player => player.classList.add('darkened'));
+
+    let countdown = 3; // Countdown starts from 3
+    countdownDisplay.textContent = countdown;
+
+    const interval = setInterval(() => {
+        countdown--;
+        if (countdown > 0) {
+            countdownDisplay.textContent = countdown;
+        } else {
+            clearInterval(interval);
+            selectRandomPlayer();
+        }
+    }, 1000);
+}
+
+// Function to select and highlight a random player
+function selectRandomPlayer() {
+    const players = document.querySelectorAll('.player');
+    const randomIndex = Math.floor(Math.random() * players.length);
+    const startingPlayer = players[randomIndex];
+
+    // Highlight the selected player
+    startingPlayer.classList.add('selected');
+    setTimeout(() => startingPlayer.classList.remove('selected'), 3000);
+
+    const countdownDisplay = document.getElementById('countdown-display');
+    countdownDisplay.textContent = `${startingPlayer.querySelector('h3').textContent} Starts!`;
+
+    // Remove darkening and fade out countdown after 3 seconds
+    setTimeout(() => {
+        countdownDisplay.style.opacity = 0;
+        document.querySelectorAll('.player').forEach(player => player.classList.remove('darkened'));
+    }, 3000);
+}
