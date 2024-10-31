@@ -89,7 +89,7 @@ body {
     display: grid;
     gap: 20px;
     grid-template-columns: repeat(2, 1fr); /* Two columns */
-    width: 80%; /* 80% width on large screens */
+    width: 70%; /* 80% width on large screens */
     max-width: 1200px;
     text-align: center;
     position: relative;
@@ -98,7 +98,7 @@ body {
 /* Medium screens (tablets in landscape) */
 @media (max-width: 900px) {
     #players-container {
-        width: 90%; /* Scale to 90% width */
+        width: 80%; /* Scale to 90% width */
         grid-template-columns: repeat(2, 1fr); /* Still two columns */
     }
 }
@@ -106,7 +106,7 @@ body {
 /* Small screens (phones in landscape and portrait) */
 @media (max-width: 600px) {
     #players-container {
-        width: 100%; /* Scale to full width on small screens */
+        width: 90%; /* Scale to full width on small screens */
         grid-template-columns: 1fr; /* Stack vertically */
         padding: 10px;
     }
@@ -136,7 +136,7 @@ body {
     background-color: #ffffff;
     border: 2px solid #d9e2ec;
     border-radius: 12px;
-    padding: 5px 40px;
+    padding: 5px 20px;
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     max-width: 600px;
@@ -158,8 +158,8 @@ body {
 /* Control buttons styling */
 .control-buttons {
     display: flex;
-    gap: 15px;
-    justify-content: center;
+    gap: 10px;
+    justify-content: space-evenly;
 }
 
 .control-buttons button {
