@@ -172,15 +172,111 @@ body {
     background-color: #c0d6e4;
     border: none;
     border-radius: 10px;
-    transition: background-color 0.2s;
+    transition: background-color 0.2s, transform 0.1s;
 }
 
 .control-buttons button:hover {
     background-color: #a5c0d0;
 }
 
+.control-buttons button:active {
+    transform: scale(0.95); /* Click animation effect */
+}
+
+/* Icon buttons for Coin Flip and Dice Roll */
+.icon-button {
+    width: 45px;
+    height: 45px;
+    font-size: 0; /* Hide text for icon */
+    background-size: cover;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+/* Coin Flip button icon */
+.coin-button {
+    background-image: url('path-to-coin-icon.png'); /* Replace with actual coin icon path */
+    background-size: 75%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #f5d742;
+}
+
+/* Dice Roll button icon */
+.dice-button {
+    background-image: url('path-to-dice-icon.png'); /* Replace with actual dice icon path */
+    background-color: #8bbdd9;
+}
+
+/* Result display styling */
+.result-display {
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #4a4a4a;
+    text-align: center;
+}
+
 /* Highlighted player after random selection */
 .player.selected {
     background-color: #ffeb3b;
     transition: background-color 0.3s ease-out;
+}
+
+/* Dice modal styling */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Dice icon buttons in modal */
+.dice-icon-button {
+    width: 60px;
+    height: 60px;
+    background-size: contain; /* Ensure full icon coverage */
+    background-repeat: no-repeat;
+    background-position: center;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    margin: 10px;
+}
+
+/* D6 icon button */
+.d6-icon {
+    background-image: url('path-to-d6-icon.png'); /* Replace with actual D6 icon path */
+}
+
+/* D20 icon button */
+.d20-icon {
+    background-image: url('path-to-d20-icon.png'); /* Replace with actual D20 icon path */
+}
+
+/* Centered Cancel button styling */
+.modal-content button:not(.dice-icon-button) {
+    display: block;
+    margin: 20px auto 0; /* Centered below the icons */
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    border: none;
 }
