@@ -187,12 +187,14 @@ body {
     background-image: url('path-to-d6-icon.png'); /* Replace with actual path */
     background-size: 100%;
     background-position: center;
+    background-repeat: no-repeat;
 }
 
 .d20-button {
     background-image: url('path-to-d20-icon.png'); /* Replace with actual path */
     background-size: 100%;
     background-position: center;
+    background-repeat: no-repeat;
 }
 
 /* Hover effects for icon buttons */
