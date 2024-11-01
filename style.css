@@ -15,7 +15,7 @@ body {
   margin: 0;
   background-color: #f9f9f9;
   color: #333333;
-  touch-action: manipulation;
+  touch-action: manipulation; /* Disable double-tap zoom */
 }
 
 /* Sidebar styling */
@@ -161,9 +161,8 @@ body {
 }
 
 .control-buttons button {
-  padding: 20px; /* Expand padding for larger click area */
-  width: auto; /* Adjust width as needed */
-  height: auto;
+  width: 57.5px;
+  height: 57.5px;
   font-size: 28px;
   font-weight: bold;
   cursor: pointer;
