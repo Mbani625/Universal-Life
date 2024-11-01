@@ -12,6 +12,17 @@ document.addEventListener("DOMContentLoaded", () => {
   initializePlayers(2); // Default to 1v1
 });
 
+// Prevent double-tap zoom on mobile
+document.addEventListener(
+  "touchstart",
+  function preventDoubleTapZoom(event) {
+    if (event.touches.length > 1) {
+      event.preventDefault();
+    }
+  },
+  { passive: false }
+);
+
 function setGameMode(mode) {
   currentGameMode = mode;
 
@@ -66,12 +77,20 @@ function createPlayerCounter(playerNumber) {
   // Add Life (+) Button
   const addButton = document.createElement("button");
   addButton.textContent = "+";
-  addButton.onclick = () => adjustLifePoints(lifePoints, incrementValue);
+  addButton.onmousedown = () => startAdjustingLife(lifePoints, incrementValue);
+  addButton.ontouchstart = () => startAdjustingLife(lifePoints, incrementValue);
+  addButton.onmouseup = stopAdjustingLife;
+  addButton.ontouchend = stopAdjustingLife;
 
   // Subtract Life (-) Button
   const subtractButton = document.createElement("button");
   subtractButton.textContent = "-";
-  subtractButton.onclick = () => adjustLifePoints(lifePoints, -incrementValue);
+  subtractButton.onmousedown = () =>
+    startAdjustingLife(lifePoints, -incrementValue);
+  subtractButton.ontouchstart = () =>
+    startAdjustingLife(lifePoints, -incrementValue);
+  subtractButton.onmouseup = stopAdjustingLife;
+  subtractButton.ontouchend = stopAdjustingLife;
 
   controlButtons.appendChild(addButton);
   controlButtons.appendChild(subtractButton);
@@ -130,6 +149,21 @@ function adjustLifePoints(lifePointsElement, change) {
   lifePointsElement.textContent = Math.max(0, currentLife);
 }
 
+// Hold down functionality for rapid life point adjustment
+let adjustInterval;
+
+function startAdjustingLife(lifePointsElement, change) {
+  adjustLifePoints(lifePointsElement, change);
+  adjustInterval = setInterval(
+    () => adjustLifePoints(lifePointsElement, change),
+    100
+  );
+}
+
+function stopAdjustingLife() {
+  clearInterval(adjustInterval);
+}
+
 // Randomize and select the starting player by highlighting each in succession
 function startRandomPlayerSelection() {
   const countdownDisplay = document.getElementById("countdown-display");
@@ -180,23 +214,4 @@ function finalizeStartingPlayer(player) {
   setTimeout(() => {
     countdownDisplay.style.opacity = 0;
   }, 3000);
-
-  // Remove the selected highlight after an additional 3 seconds
-  setTimeout(() => {
-    player.classList.remove("selected");
-  }, 6000); // 3000ms (initial) + 3000ms (additional) = 6000ms total
 }
-
-addButton.addEventListener("touchstart", () =>
-  adjustLifePoints(lifePoints, incrementValue)
-);
-addButton.addEventListener("mousedown", () =>
-  adjustLifePoints(lifePoints, incrementValue)
-);
-
-subtractButton.addEventListener("touchstart", () =>
-  adjustLifePoints(lifePoints, -incrementValue)
-);
-subtractButton.addEventListener("mousedown", () =>
-  adjustLifePoints(lifePoints, -incrementValue)
-);
