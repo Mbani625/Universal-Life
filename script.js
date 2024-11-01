@@ -186,3 +186,17 @@ function finalizeStartingPlayer(player) {
     player.classList.remove("selected");
   }, 6000); // 3000ms (initial) + 3000ms (additional) = 6000ms total
 }
+
+addButton.addEventListener("touchstart", () =>
+  adjustLifePoints(lifePoints, incrementValue)
+);
+addButton.addEventListener("mousedown", () =>
+  adjustLifePoints(lifePoints, incrementValue)
+);
+
+subtractButton.addEventListener("touchstart", () =>
+  adjustLifePoints(lifePoints, -incrementValue)
+);
+subtractButton.addEventListener("mousedown", () =>
+  adjustLifePoints(lifePoints, -incrementValue)
+);

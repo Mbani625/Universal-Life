@@ -15,7 +15,6 @@ body {
   margin: 0;
   background-color: #f9f9f9;
   color: #333333;
-  touch-action: manipulation;
 }
 
 /* Sidebar styling */
@@ -161,8 +160,9 @@ body {
 }
 
 .control-buttons button {
-  width: 57.5px;
-  height: 57.5px;
+  padding: 20px; /* Expand padding for larger click area */
+  width: auto; /* Adjust width as needed */
+  height: auto;
   font-size: 28px;
   font-weight: bold;
   cursor: pointer;
