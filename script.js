@@ -248,22 +248,21 @@ function toggleDarkMode() {
     .getElementById("countdown-display")
     .classList.toggle("dark-mode", isDarkMode);
 
+  // Temporarily remove the selected class from players to reset the theme correctly
+  const selectedPlayer = document.querySelector(".player.selected");
+  if (selectedPlayer) selectedPlayer.classList.remove("selected");
+
   // Apply dark mode styling to all player containers and buttons
   document.querySelectorAll(".player").forEach((player) => {
-    if (isDarkMode) {
-      player.classList.add("dark-mode"); // Apply dark mode to player containers
-    } else {
-      player.classList.remove("dark-mode"); // Revert to light mode for player containers
-    }
+    player.classList.toggle("dark-mode", isDarkMode);
   });
 
   document.querySelectorAll(".control-buttons button").forEach((button) => {
-    if (isDarkMode) {
-      button.classList.add("dark-mode"); // Apply dark mode to buttons
-    } else {
-      button.classList.remove("dark-mode"); // Revert to light mode for buttons
-    }
+    button.classList.toggle("dark-mode", isDarkMode);
   });
+
+  // Reapply the selected class to the originally selected player after theme toggle
+  if (selectedPlayer) selectedPlayer.classList.add("selected");
 
   // Save user preference
   localStorage.setItem("darkMode", isDarkMode ? "enabled" : "disabled");

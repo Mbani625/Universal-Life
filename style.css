@@ -18,6 +18,40 @@ body {
   touch-action: manipulation; /* Disable double-tap zoom */
 }
 
+/* General font color for dark mode */
+body.dark-mode {
+  color: #e0e0e0; /* Off-white font color */
+}
+
+/* Dark mode styling for player container text */
+body.dark-mode .player h3,
+body.dark-mode .life-points,
+body.dark-mode .result-display {
+  color: #e0e0e0; /* Off-white for player container text */
+}
+
+/* Dark mode styling for icons */
+body.dark-mode .icon,
+body.dark-mode .control-buttons button {
+  color: #e0e0e0; /* Off-white for icons and button text */
+}
+
+/* Dark mode styling for sidebar icons and buttons */
+body.dark-mode #sidebar,
+body.dark-mode #sidebar button {
+  color: #e0e0e0; /* Off-white for sidebar text and icons */
+}
+
+/* Adjust button background for better contrast in dark mode */
+body.dark-mode .control-buttons button {
+  background-color: #555555; /* Darker button background */
+}
+
+/* Hover effect for buttons in dark mode */
+body.dark-mode .control-buttons button:hover {
+  background-color: #666666; /* Slightly lighter on hover */
+}
+
 /* Sidebar styling */
 #sidebar {
   position: fixed;
@@ -54,6 +88,28 @@ body {
 
 #sidebar-content {
   padding: 10px;
+}
+
+/* Sidebar button styling for light mode */
+#sidebar button {
+  background-color: #a0c1d1; /* Light mode background color */
+  color: #333333; /* Light mode text color */
+  border: none;
+  border-radius: 5px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+/* Sidebar button styling for dark mode */
+body.dark-mode #sidebar button {
+  background-color: #555555; /* Dark mode background color */
+  color: #e0e0e0; /* Off-white text color for dark mode */
+}
+
+/* Hover effect for sidebar buttons in dark mode */
+body.dark-mode #sidebar button:hover {
+  background-color: #666666; /* Slightly lighter on hover */
 }
 
 #game-mode-buttons button,
