@@ -1,220 +1,223 @@
 /* Basic reset */
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    margin: 0;
-    background-color: #f9f9f9;
-    color: #333333;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+  background-color: #f9f9f9;
+  color: #333333;
 }
 
 /* Sidebar styling */
 #sidebar {
-    position: fixed;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%) translateX(-180px); /* Hidden initially */
-    width: 180px;
-    background-color: #f0f4f8;
-    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
-    padding: 8px;
-    border-radius: 8px;
-    transition: transform 0.3s ease;
-    z-index: 1000;
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%) translateX(-180px); /* Hidden initially */
+  width: 180px;
+  background-color: #f0f4f8;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+  padding: 8px;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+  z-index: 1000;
 }
 
 #sidebar.open {
-    transform: translateY(-50%) translateX(0); /* Slide in when open */
+  transform: translateY(-50%) translateX(0); /* Slide in when open */
 }
 
 #sidebar-toggle {
-    position: absolute;
-    top: 10px;
-    left: 180px; /* Adjusted to align with sidebar */
-    background-color: #a0c1d1;
-    border: none;
-    color: #333;
-    font-size: 28px;
-    padding: 6px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-    z-index: 1001;
+  position: absolute;
+  top: 10px;
+  left: 180px; /* Adjusted to align with sidebar */
+  background-color: #a0c1d1;
+  border: none;
+  color: #333;
+  font-size: 28px;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1001;
 }
 
 #sidebar-content {
-    padding: 10px;
+  padding: 10px;
 }
 
 #game-mode-buttons button,
 #player-setup button,
 #start-player-button {
-    display: block;
-    width: 100%;
-    margin-bottom: 5px;
-    padding: 8px;
-    font-size: 16px;
-    background-color: #a0c1d1;
-    color: #333333;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.2s;
+  display: block;
+  width: 100%;
+  margin-bottom: 5px;
+  padding: 8px;
+  font-size: 16px;
+  background-color: #a0c1d1;
+  color: #333333;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  z-index: 1002; /* Ensure button is on top */
 }
 
 #game-mode-buttons button:hover,
 #player-setup button:hover,
 #start-player-button:hover {
-    background-color: #91b3c3;
+  background-color: #91b3c3;
 }
 
 /* Divider line above the Randomize Starting Player button */
 .divider {
-    border: none;
-    border-top: 2px solid #d9e2ec;
-    margin: 10px 0;
+  border: none;
+  border-top: 2px solid #d9e2ec;
+  margin: 10px 0;
 }
 
 /* Player container */
 #players-container {
-    display: grid;
-    gap: 20px;
-    grid-template-columns: repeat(2, 1fr); /* Two columns */
-    width: 70%; /* 80% width on large screens */
-    max-width: 1200px;
-    text-align: center;
-    position: relative;
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(2, 1fr); /* Two columns */
+  width: 70%; /* 80% width on large screens */
+  max-width: 1200px;
+  text-align: center;
+  position: relative;
 }
 
 /* Medium screens (tablets in landscape) */
 @media (max-width: 900px) {
-    #players-container {
-        width: 80%; /* Scale to 90% width */
-        grid-template-columns: repeat(2, 1fr); /* Still two columns */
-    }
+  #players-container {
+    width: 80%; /* Scale to 90% width */
+    grid-template-columns: repeat(2, 1fr); /* Still two columns */
+  }
 }
 
 /* Small screens (phones in landscape and portrait) */
 @media (max-width: 600px) {
-    #players-container {
-        width: 90%; /* Scale to full width on small screens */
-        grid-template-columns: 1fr; /* Stack vertically */
-        padding: 10px;
-    }
+  #players-container {
+    width: 90%; /* Scale to full width on small screens */
+    grid-template-columns: 1fr; /* Stack vertically */
+    padding: 10px;
+  }
 }
 
-/* Countdown display styling */
+/* Countdown display styling without background overlay */
 #countdown-display {
-    font-size: 48px;
-    font-weight: bold;
-    color: #4a4a4a;
-    text-align: center;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 20px 40px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
-    z-index: 10;
+  font-size: 48px;
+  font-weight: bold;
+  color: #4a4a4a;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1; /* Lower z-index to stay behind the button */
 }
 
 /* Player styling */
 .player {
-    background-color: #ffffff;
-    border: 2px solid #d9e2ec;
-    border-radius: 12px;
-    padding: 5px 20px;
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 600px;
-    width: 100%;
+  background-color: #ffffff;
+  border: 2px solid #d9e2ec;
+  border-radius: 12px;
+  padding: 5px 20px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  width: 100%;
 }
 
 .player h3 {
-    color: #4a4a4a;
-    font-weight: 500;
+  color: #4a4a4a;
+  font-weight: 500;
 }
 
 .life-points {
-    font-size: 36px;
-    font-weight: bold;
-    color: #4a4a4a;
-    margin: 0;
+  font-size: 36px;
+  font-weight: bold;
+  color: #4a4a4a;
+  margin: 0;
 }
 
 /* Control buttons styling */
 .control-buttons {
-    display: flex;
-    gap: 10px;
-    justify-content: space-evenly;
+  display: flex;
+  gap: 10px;
+  justify-content: space-evenly;
 }
 
 .control-buttons button {
-    width: 57.5px;
-    height: 57.5px;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-    color: #333333;
-    background-color: #c0d6e4;
-    border: none;
-    border-radius: 10px;
-    transition: background-color 0.2s, transform 0.1s;
+  width: 57.5px;
+  height: 57.5px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #333333;
+  background-color: #c0d6e4;
+  border: none;
+  border-radius: 10px;
+  transition: background-color 0.2s, transform 0.1s;
 }
 
 /* Icon background images for dice and coin flip buttons */
 .coin-flip-button {
-    background-image: url('path-to-coin-icon.png'); /* Replace with actual path */
-    background-size: 75%;
-    background-position: center;
-    background-repeat: no-repeat;
+  background-image: url("path-to-coin-icon.png"); /* Replace with actual path */
+  background-size: 75%;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .d6-button {
-    background-image: url('path-to-d6-icon.png'); /* Replace with actual path */
-    background-size: 100%;
-    background-position: center;
-    background-repeat: no-repeat;
+  background-image: url("path-to-d6-icon.png"); /* Replace with actual path */
+  background-size: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .d20-button {
-    background-image: url('path-to-d20-icon.png'); /* Replace with actual path */
-    background-size: 100%;
-    background-position: center;
-    background-repeat: no-repeat;
+  background-image: url("path-to-d20-icon.png"); /* Replace with actual path */
+  background-size: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 /* Hover effects for icon buttons */
 .dice-button:hover,
 .coin-flip-button:hover {
-    background-color: #91b3c3;
+  background-color: #91b3c3;
 }
 
 /* Result display styling */
 .result-display {
-    margin-top: 10px;
-    font-size: 18px;
-    font-weight: bold;
-    color: #4a4a4a;
-    text-align: center;
+  margin-top: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #4a4a4a;
+  text-align: center;
 }
 
-/* Highlighted player after random selection */
+/* Darkened player styling */
+.player.darkened {
+  background-color: rgba(0, 0, 0, 0.4);
+  color: rgba(255, 255, 255, 0.5);
+  transition: background-color 0.5s, color 0.5s;
+}
+
+/* Highlighted player during selection */
 .player.selected {
-    background-color: #ffeb3b;
-    transition: background-color 0.3s ease-out;
+  background-color: #ffeb3b;
+  transition: background-color 0.25s ease-in-out;
 }
-
