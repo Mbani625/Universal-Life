@@ -160,17 +160,29 @@ body {
   justify-content: space-evenly;
 }
 
+/* Control buttons styling for light mode */
 .control-buttons button {
   width: 57.5px;
   height: 57.5px;
   font-size: 28px;
   font-weight: bold;
   cursor: pointer;
-  color: #333333;
-  background-color: #c0d6e4;
+  color: #333333; /* Light mode text color */
+  background-color: #c0d6e4; /* Light mode background */
   border: none;
   border-radius: 10px;
-  transition: background-color 0.2s, transform 0.1s;
+  transition: background-color 0.2s, color 0.2s, transform 0.1s;
+}
+
+/* Dark mode styling for buttons inside player containers */
+body.dark-mode .control-buttons button {
+  color: #e0e0e0; /* Dark mode text color */
+  background-color: #555555; /* Dark mode background */
+}
+
+/* Hover effect for buttons in dark mode */
+body.dark-mode .control-buttons button:hover {
+  background-color: #666666; /* Darker shade for hover */
 }
 
 /* Icon background images for dice and coin flip buttons */
@@ -223,14 +235,33 @@ body {
   transition: background-color 0.25s ease-in-out;
 }
 
-/* Highlight fade animation */
-@keyframes highlight-fade {
+/* Keyframe for light mode */
+@keyframes highlight-fade-light {
   0% {
     background-color: #ffeb3b; /* Yellow highlight */
   }
   100% {
-    background-color: #ffffff; /* Original color */
+    background-color: #ffffff; /* Light mode player container color */
   }
+}
+
+/* Keyframe for dark mode */
+@keyframes highlight-fade-dark {
+  0% {
+    background-color: #ffeb3b; /* Yellow highlight */
+  }
+  100% {
+    background-color: #333333; /* Dark mode player container color */
+  }
+}
+
+/* Fade animation for the player container based on mode */
+.player.fade-light {
+  animation: highlight-fade-light 2s forwards;
+}
+
+.player.fade-dark {
+  animation: highlight-fade-dark 2s forwards;
 }
 
 .player.selected {
@@ -320,4 +351,10 @@ body.dark-mode {
 
 #countdown-display.dark-mode {
   color: #ffffff;
+}
+
+/* Dark mode - Selected player during randomization */
+body.dark-mode .player.selected {
+  background-color: #ffb300; /* Bright yellow for visibility in dark mode */
+  color: #333333;
 }

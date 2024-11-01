@@ -61,6 +61,11 @@ function createPlayerCounter(playerNumber) {
   const playerDiv = document.createElement("div");
   playerDiv.classList.add("player");
 
+  // Apply the current theme to the new player container
+  if (document.body.classList.contains("dark-mode")) {
+    playerDiv.classList.add("dark-mode");
+  }
+
   const playerName = document.createElement("h3");
   playerName.textContent = `Player ${playerNumber}`;
   playerDiv.appendChild(playerName);
@@ -78,22 +83,14 @@ function createPlayerCounter(playerNumber) {
   const addButton = document.createElement("button");
   addButton.textContent = "+";
   addButton.onmousedown = () => startAdjustingLife(lifePoints, incrementValue);
-  addButton.ontouchstart = () => startAdjustingLife(lifePoints, incrementValue);
   addButton.onmouseup = stopAdjustingLife;
-  addButton.ontouchend = stopAdjustingLife;
 
   // Subtract Life (-) Button
   const subtractButton = document.createElement("button");
   subtractButton.textContent = "-";
   subtractButton.onmousedown = () =>
     startAdjustingLife(lifePoints, -incrementValue);
-  subtractButton.ontouchstart = () =>
-    startAdjustingLife(lifePoints, -incrementValue);
   subtractButton.onmouseup = stopAdjustingLife;
-  subtractButton.ontouchend = stopAdjustingLife;
-
-  controlButtons.appendChild(addButton);
-  controlButtons.appendChild(subtractButton);
 
   // Coin Flip Button
   const coinFlipButton = document.createElement("button");
@@ -111,6 +108,8 @@ function createPlayerCounter(playerNumber) {
   d20Button.onclick = () => rollDice(20, playerDiv);
 
   // Append all buttons to controlButtons container
+  controlButtons.appendChild(addButton);
+  controlButtons.appendChild(subtractButton);
   controlButtons.appendChild(coinFlipButton);
   controlButtons.appendChild(d6Button);
   controlButtons.appendChild(d20Button);
@@ -200,14 +199,19 @@ function startRandomPlayerSelection() {
   }, highlightDuration);
 }
 
-// Finalize and display the selected starting player
 function finalizeStartingPlayer(player) {
   const countdownDisplay = document.getElementById("countdown-display");
 
-  // Reset darkening on all players and only keep the selected one highlighted
-  document
-    .querySelectorAll(".player")
-    .forEach((p) => p.classList.remove("darkened", "selected"));
+  // Reset temporary classes but retain the current theme
+  document.querySelectorAll(".player").forEach((p) => {
+    p.classList.remove("darkened", "selected", "fade-light", "fade-dark");
+    if (document.body.classList.contains("dark-mode")) {
+      p.classList.add("dark-mode");
+    } else {
+      p.classList.remove("dark-mode");
+    }
+  });
+
   player.classList.add("selected");
 
   // Hide countdown display after a short delay
@@ -215,10 +219,24 @@ function finalizeStartingPlayer(player) {
     countdownDisplay.style.opacity = 0;
   }, 3000);
 
-  // Start fade effect after the selection process is complete
+  // Start the appropriate fade effect based on the theme
+  const isDarkMode = document.body.classList.contains("dark-mode");
   setTimeout(() => {
-    player.classList.add("fade"); // Add fade class to trigger animation
-  }, 2000); // Delay added here to ensure the yellow remains for 2 seconds
+    player.classList.add(isDarkMode ? "fade-dark" : "fade-light");
+  }, 2000);
+
+  // Ensure theme consistency after animation
+  player.addEventListener(
+    "animationend",
+    () => {
+      if (isDarkMode) {
+        player.classList.add("dark-mode");
+      } else {
+        player.classList.remove("dark-mode");
+      }
+    },
+    { once: true }
+  );
 }
 
 function toggleDarkMode() {
@@ -227,14 +245,25 @@ function toggleDarkMode() {
   // Toggle dark mode classes on necessary elements
   document.getElementById("sidebar").classList.toggle("dark-mode", isDarkMode);
   document
-    .querySelectorAll(".player")
-    .forEach((el) => el.classList.toggle("dark-mode", isDarkMode));
-  document
-    .querySelectorAll(".control-buttons button")
-    .forEach((el) => el.classList.toggle("dark-mode", isDarkMode));
-  document
     .getElementById("countdown-display")
     .classList.toggle("dark-mode", isDarkMode);
+
+  // Apply dark mode styling to all player containers and buttons
+  document.querySelectorAll(".player").forEach((player) => {
+    if (isDarkMode) {
+      player.classList.add("dark-mode"); // Apply dark mode to player containers
+    } else {
+      player.classList.remove("dark-mode"); // Revert to light mode for player containers
+    }
+  });
+
+  document.querySelectorAll(".control-buttons button").forEach((button) => {
+    if (isDarkMode) {
+      button.classList.add("dark-mode"); // Apply dark mode to buttons
+    } else {
+      button.classList.remove("dark-mode"); // Revert to light mode for buttons
+    }
+  });
 
   // Save user preference
   localStorage.setItem("darkMode", isDarkMode ? "enabled" : "disabled");
@@ -250,7 +279,6 @@ document.addEventListener("DOMContentLoaded", () => {
     themeToggle.checked = true;
     toggleDarkMode();
   } else {
-    // Ensure light mode is active by default
     themeToggle.checked = false;
   }
 });
