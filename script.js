@@ -187,12 +187,12 @@ function finalizeStartingPlayer(player) {
   }, 6000); // 3000ms (initial) + 3000ms (additional) = 6000ms total
 }
 
-// Prevent double-tap zoom on mobile
+// Prevent double-tap zoom on mobile but allow rapid clicks
 let lastTouchEnd = 0;
 
 document.addEventListener("touchend", (event) => {
   const now = Date.now();
-  if (now - lastTouchEnd <= 300) {
+  if (now - lastTouchEnd <= 300 && event.target.classList.contains("button")) {
     event.preventDefault();
   }
   lastTouchEnd = now;
