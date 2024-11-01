@@ -240,3 +240,84 @@ body {
 .player.fade {
   animation: highlight-fade 2s forwards; /* Fade back to original color over 2 seconds */
 }
+
+/* Divider line above the Randomize Starting Player button and Theme Toggle */
+.divider {
+  border: none;
+  border-top: 2px solid #d9e2ec;
+  margin: 10px 0;
+}
+
+/* Theme toggle container styling */
+#theme-toggle-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  background-color: #a0c1d1; /* Matching color with other buttons */
+  padding: 8px;
+  border-radius: 8px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.2s;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.theme-toggle input[type="checkbox"] {
+  display: none;
+}
+
+.theme-toggle .icon {
+  font-size: 24px;
+  padding: 0 8px;
+  transition: filter 0.3s ease;
+}
+
+/* Default light mode - sun in color, moon in grayscale */
+.theme-toggle .sun {
+  filter: grayscale(0%); /* Colorful */
+}
+
+.theme-toggle .moon {
+  filter: grayscale(100%); /* Grayscale */
+}
+
+/* Dark mode - moon in color, sun in grayscale */
+.theme-toggle input[type="checkbox"]:checked ~ .sun {
+  filter: grayscale(100%); /* Grayscale when not selected */
+}
+
+.theme-toggle input[type="checkbox"]:checked ~ .moon {
+  filter: grayscale(0%); /* Colorful when selected */
+}
+
+/* Dark mode styling */
+body.dark-mode {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+#sidebar.dark-mode {
+  background-color: #1e1e1e;
+  color: #e0e0e0;
+}
+
+.player.dark-mode {
+  background-color: #333333;
+  border-color: #444444;
+  color: #e0e0e0;
+}
+
+.control-buttons button.dark-mode {
+  background-color: #555555;
+  color: #e0e0e0;
+}
+
+#countdown-display.dark-mode {
+  color: #ffffff;
+}

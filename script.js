@@ -220,3 +220,37 @@ function finalizeStartingPlayer(player) {
     player.classList.add("fade"); // Add fade class to trigger animation
   }, 2000); // Delay added here to ensure the yellow remains for 2 seconds
 }
+
+function toggleDarkMode() {
+  const isDarkMode = document.body.classList.toggle("dark-mode");
+
+  // Toggle dark mode classes on necessary elements
+  document.getElementById("sidebar").classList.toggle("dark-mode", isDarkMode);
+  document
+    .querySelectorAll(".player")
+    .forEach((el) => el.classList.toggle("dark-mode", isDarkMode));
+  document
+    .querySelectorAll(".control-buttons button")
+    .forEach((el) => el.classList.toggle("dark-mode", isDarkMode));
+  document
+    .getElementById("countdown-display")
+    .classList.toggle("dark-mode", isDarkMode);
+
+  // Save user preference
+  localStorage.setItem("darkMode", isDarkMode ? "enabled" : "disabled");
+}
+
+// Load the user's preference or default to light mode on page load
+document.addEventListener("DOMContentLoaded", () => {
+  const darkModePreference = localStorage.getItem("darkMode");
+  const themeToggle = document.getElementById("theme-toggle");
+
+  if (darkModePreference === "enabled") {
+    document.body.classList.add("dark-mode");
+    themeToggle.checked = true;
+    toggleDarkMode();
+  } else {
+    // Ensure light mode is active by default
+    themeToggle.checked = false;
+  }
+});
