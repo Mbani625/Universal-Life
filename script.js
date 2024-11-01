@@ -156,7 +156,7 @@ function startAdjustingLife(lifePointsElement, change) {
   adjustLifePoints(lifePointsElement, change);
   adjustInterval = setInterval(
     () => adjustLifePoints(lifePointsElement, change),
-    100
+    200
   );
 }
 
