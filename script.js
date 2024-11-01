@@ -135,7 +135,6 @@ function startRandomPlayerSelection() {
   const countdownDisplay = document.getElementById("countdown-display");
   countdownDisplay.style.opacity = 1; // Make countdown visible
   countdownDisplay.style.zIndex = 1; // Keep countdown behind the button
-  countdownDisplay.textContent = "Selecting Starting Player...";
 
   const players = document.querySelectorAll(".player");
   let randomIndex = 0;
@@ -170,9 +169,6 @@ function startRandomPlayerSelection() {
 // Finalize and display the selected starting player
 function finalizeStartingPlayer(player) {
   const countdownDisplay = document.getElementById("countdown-display");
-  countdownDisplay.textContent = `${
-    player.querySelector("h3").textContent
-  } Starts!`;
 
   // Reset darkening on all players and only keep the selected one highlighted
   document
