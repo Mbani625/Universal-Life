@@ -222,3 +222,21 @@ body {
   background-color: #ffeb3b;
   transition: background-color 0.25s ease-in-out;
 }
+
+/* Highlight fade animation */
+@keyframes highlight-fade {
+  0% {
+    background-color: #ffeb3b; /* Yellow highlight */
+  }
+  100% {
+    background-color: #ffffff; /* Original color */
+  }
+}
+
+.player.selected {
+  background-color: #ffeb3b;
+}
+
+.player.fade {
+  animation: highlight-fade 2s forwards; /* Fade back to original color over 2 seconds */
+}

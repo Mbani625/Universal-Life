@@ -214,4 +214,9 @@ function finalizeStartingPlayer(player) {
   setTimeout(() => {
     countdownDisplay.style.opacity = 0;
   }, 3000);
+
+  // Start fade effect after the selection process is complete
+  setTimeout(() => {
+    player.classList.add("fade"); // Add fade class to trigger animation
+  }, 2000); // Delay added here to ensure the yellow remains for 2 seconds
 }
