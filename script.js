@@ -66,9 +66,6 @@ function createPlayerCounter(playerNumber) {
     playerDiv.classList.add("dark-mode");
   }
 
-  const playerName = document.createElement("h3");
-  playerName.textContent = `Player ${playerNumber}`;
-  playerDiv.appendChild(playerName);
 
   const lifePoints = document.createElement("div");
   lifePoints.classList.add("life-points");
