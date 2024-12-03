@@ -212,8 +212,6 @@ body.dark-mode #sidebar button:hover {
   }
 }
 
-
-
 .player h3 {
   color: #4a4a4a;
   font-weight: 500;
@@ -223,7 +221,7 @@ body.dark-mode #sidebar button:hover {
   font-size: 36px;
   font-weight: bold;
   color: #4a4a4a;
-  margin: 0;
+  margin-bottom: 20px;
 }
 
 /* Control buttons styling */
