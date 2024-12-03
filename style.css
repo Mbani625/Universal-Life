@@ -57,8 +57,8 @@ body.dark-mode .control-buttons button:hover {
   position: fixed;
   left: 0;
   top: 50%;
-  transform: translateY(-50%) translateX(-250px); /* Hidden initially */
-  width: 250px;
+  transform: translateY(-50%) translateX(-300px); /* Hidden initially */
+  width: 300px;
   background-color: #f0f4f8;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
   padding: 8px;
@@ -74,7 +74,7 @@ body.dark-mode .control-buttons button:hover {
 #sidebar-toggle {
   position: fixed;
   top: 10px;
-  left: 260px; /* Adjusted to align with sidebar */
+  left: 310px; /* Adjusted to align with sidebar */
   background-color: #a0c1d1;
   border: none;
   color: #333;
@@ -90,6 +90,7 @@ body.dark-mode .control-buttons button:hover {
   overflow-y: scroll;
   height:350px;
   padding: 10px;
+  justify-items: center;
 }
 
 /* Sidebar button styling for light mode */
@@ -118,8 +119,8 @@ body.dark-mode #sidebar button:hover {
 #player-setup button,
 #start-player-button {
   display: block;
-  width: 100%;
-  margin: 5px 0px;
+  width: 230px;
+  margin: 5px 2px;
   padding: 8px;
   font-size: 16px;
   background-color: #a0c1d1;
@@ -129,6 +130,10 @@ body.dark-mode #sidebar button:hover {
   cursor: pointer;
   transition: background-color 0.2s;
   z-index: 1002; /* Ensure button is on top */
+}
+
+#player-setup button {
+  margin: 10px 0px;
 }
 
 #game-mode-buttons button:hover,
@@ -141,18 +146,12 @@ body.dark-mode #sidebar button:hover {
 #game-mode-buttons.two-column-layout {
   display: grid;
   grid-template-columns: 1fr 1fr; /* Two equal columns */
-  gap: 10px; /* Space between buttons */
+  gap: 2px; /* Space between buttons */
 }
 
 #game-mode-buttons.two-column-layout button {
-  width: 100%; /* Ensure buttons fill their grid cells */
-}
-
-/* Divider line above the Randomize Starting Player button */
-.divider {
-  border: none;
-  border-top: 2px solid #d9e2ec;
-  margin: 10px 0;
+  width: 105px; /* Button width match */
+  height: 55px; /* Button height match*/
 }
 
 /* Player container */
@@ -375,6 +374,7 @@ body.dark-mode .control-buttons button:hover {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 230px;
   margin-top: 10px;
   background-color: #a0c1d1; /* Matching color with other buttons */
   padding: 8px;
