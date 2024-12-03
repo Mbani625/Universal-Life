@@ -35,12 +35,24 @@ function setGameMode(mode) {
       startingLifeTotal = 40;
       incrementValue = 1;
       break;
+    case "lorcana":
+      startingLifeTotal = 0;
+      incrementValue = 1;
+      break;
     case "yugioh":
       startingLifeTotal = 8000;
       incrementValue = 50;
       break;
     case "sorcery":
       startingLifeTotal = 20;
+      incrementValue = 1;
+      break;
+    case "elestrals":
+      startingLifeTotal = 20;
+      incrementValue = 1;
+      break;
+    case "battlespiritssaga":
+      startingLifeTotal = 5;
       incrementValue = 1;
       break;
   }
