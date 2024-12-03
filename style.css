@@ -57,8 +57,8 @@ body.dark-mode .control-buttons button:hover {
   position: fixed;
   left: 0;
   top: 50%;
-  transform: translateY(-50%) translateX(-180px); /* Hidden initially */
-  width: 180px;
+  transform: translateY(-50%) translateX(-250px); /* Hidden initially */
+  width: 250px;
   background-color: #f0f4f8;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
   padding: 8px;
@@ -74,7 +74,7 @@ body.dark-mode .control-buttons button:hover {
 #sidebar-toggle {
   position: fixed;
   top: 10px;
-  left: 180px; /* Adjusted to align with sidebar */
+  left: 250px; /* Adjusted to align with sidebar */
   background-color: #a0c1d1;
   border: none;
   color: #333;
@@ -117,7 +117,7 @@ body.dark-mode #sidebar button:hover {
 #start-player-button {
   display: block;
   width: 100%;
-  margin-bottom: 5px;
+  margin: 10px 0px;
   padding: 8px;
   font-size: 16px;
   background-color: #a0c1d1;
@@ -134,6 +134,18 @@ body.dark-mode #sidebar button:hover {
 #start-player-button:hover {
   background-color: #91b3c3;
 }
+
+/* Two-column layout for game-mode-buttons */
+#game-mode-buttons.two-column-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two equal columns */
+  gap: 10px; /* Space between buttons */
+}
+
+#game-mode-buttons.two-column-layout button {
+  width: 100%; /* Ensure buttons fill their grid cells */
+}
+
 
 /* Divider line above the Randomize Starting Player button */
 .divider {
