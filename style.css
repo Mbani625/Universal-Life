@@ -233,10 +233,10 @@ body.dark-mode #sidebar button:hover {
 }
 
 .life-points {
-  font-size: 36px;
+  font-size: 60px;
   font-weight: bold;
   color: #4a4a4a;
-  margin-bottom: 20px;
+  margin: 5px;
 }
 
 /* Control buttons styling */
