@@ -202,7 +202,7 @@ body.dark-mode #sidebar button:hover {
 /* Landscape mode adjustments for small devices */
 @media (max-width: 1300px) and (orientation: landscape) {
   #players-container {
-    width:90%;
+    width:100%;
     grid-template-columns: repeat(2, 1fr); /* Fit two players per row */
   }
 
