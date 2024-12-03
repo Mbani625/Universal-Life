@@ -87,6 +87,8 @@ body.dark-mode .control-buttons button:hover {
 }
 
 #sidebar-content {
+  overflow-y: scroll;
+  height:350px;
   padding: 10px;
 }
 
@@ -117,7 +119,7 @@ body.dark-mode #sidebar button:hover {
 #start-player-button {
   display: block;
   width: 100%;
-  margin: 10px 0px;
+  margin: 5px 0px;
   padding: 8px;
   font-size: 16px;
   background-color: #a0c1d1;
@@ -145,7 +147,6 @@ body.dark-mode #sidebar button:hover {
 #game-mode-buttons.two-column-layout button {
   width: 100%; /* Ensure buttons fill their grid cells */
 }
-
 
 /* Divider line above the Randomize Starting Player button */
 .divider {
