@@ -1,11 +1,45 @@
 let currentGameMode = "mtg"; // Default to Magic the Gathering
 let incrementValue = 1;
 let startingLifeTotal = 20;
+let sidebarToggle = document.getElementById("sidebar-toggle");
+let sidebarVisibleTimeout;
 
 function toggleSidebar() {
   const sidebar = document.getElementById("sidebar");
   sidebar.classList.toggle("open"); // Toggles the sidebar visibility
 }
+
+// Function to hide sidebar toggle after 3 seconds
+function hideSidebarToggle() {
+  sidebarToggle.style.opacity = 0;
+  sidebarToggle.style.pointerEvents = "none"; // Disable interactions
+}
+
+// Function to show sidebar toggle
+function showSidebarToggle() {
+  sidebarToggle.style.opacity = 1;
+  sidebarToggle.style.pointerEvents = "auto"; // Re-enable interactions
+}
+
+// Reset the timer whenever the user interacts with the page
+function resetSidebarToggleTimer() {
+  clearTimeout(sidebarVisibleTimeout);
+  showSidebarToggle();
+  sidebarVisibleTimeout = setTimeout(hideSidebarToggle, 3000);
+}
+
+// Initial setup
+document.addEventListener("DOMContentLoaded", () => {
+  resetSidebarToggleTimer();
+
+  // Add a click listener to the document
+  document.addEventListener("click", (event) => {
+    // Check if the click is outside the player container
+    if (!event.target.closest("#players-container")) {
+      resetSidebarToggleTimer();
+    }
+  });
+});
 
 // Initialize players on page load
 document.addEventListener("DOMContentLoaded", () => {
