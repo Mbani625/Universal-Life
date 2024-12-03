@@ -153,6 +153,12 @@ body.dark-mode #sidebar button:hover {
   position: relative;
 }
 
+/* Rotate the entire player container */
+.player.inverted {
+  transform: rotate(180deg);
+  transition: transform 0.3s ease;
+}
+
 /* Medium screens (tablets in landscape) */
 @media (max-width: 900px) {
   #players-container {
@@ -195,8 +201,6 @@ body.dark-mode #sidebar button:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   max-width: 600px;
   width: 100%;
-  transform-origin: center; /* Ensure rotation occurs around the center */
-  transition: transform 0.3s ease; /* Smooth rotation transition */
 }
 
 
@@ -262,6 +266,13 @@ body.dark-mode .control-buttons button:hover {
 .d20-button {
   background-image: url("path-to-d20-icon.png"); /* Replace with actual path */
   background-size: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.invertbutton {
+  background-image: url("invert\ icon.png"); /* Replace with actual path */
+  background-size: 80%;
   background-position: center;
   background-repeat: no-repeat;
 }

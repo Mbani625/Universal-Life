@@ -104,12 +104,18 @@ function createPlayerCounter(playerNumber) {
   d20Button.classList.add("dice-button", "d20-button");
   d20Button.onclick = () => rollDice(20, playerDiv);
 
+  // Invert Button
+  const invertButton = document.createElement("button");
+  invertButton.classList.add("invertbutton");
+  invertButton.onclick = () => toggleInversion(playerDiv);
+
   // Append all buttons to controlButtons container
   controlButtons.appendChild(addButton);
   controlButtons.appendChild(subtractButton);
   controlButtons.appendChild(coinFlipButton);
   controlButtons.appendChild(d6Button);
   controlButtons.appendChild(d20Button);
+  controlButtons.appendChild(invertButton);
 
   playerDiv.appendChild(controlButtons);
   document.getElementById("players-container").appendChild(playerDiv);
@@ -158,6 +164,10 @@ function startAdjustingLife(lifePointsElement, change) {
 
 function stopAdjustingLife() {
   clearInterval(adjustInterval);
+}
+
+function toggleInversion(playerDiv) {
+  playerDiv.classList.toggle("inverted");
 }
 
 // Randomize and select the starting player by highlighting each in succession
