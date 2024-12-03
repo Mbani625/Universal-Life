@@ -51,6 +51,10 @@ function setGameMode(mode) {
       startingLifeTotal = 20;
       incrementValue = 1;
       break;
+    case "grandarchive":
+      startingLifeTotal = 15;
+      incrementValue = 1;
+      break;
     case "battlespiritssaga":
       startingLifeTotal = 5;
       incrementValue = 1;
