@@ -189,7 +189,7 @@ body.dark-mode #sidebar button:hover {
 /* Adjust player container for small screens */
 @media (max-width: 600px) {
   #players-container {
-    width: 100%; /* Full width for container */
+    width: 90%; /* Full width for container */
     grid-template-columns: 1fr; /* Stack vertically */
   }
 
@@ -200,8 +200,9 @@ body.dark-mode #sidebar button:hover {
 }
 
 /* Landscape mode adjustments for small devices */
-@media (max-width: 900px) and (orientation: landscape) {
+@media (max-width: 950px) and (orientation: landscape) {
   #players-container {
+    width:90%;
     grid-template-columns: repeat(2, 1fr); /* Fit two players per row */
   }
 
