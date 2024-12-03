@@ -72,7 +72,7 @@ body.dark-mode .control-buttons button:hover {
 }
 
 #sidebar-toggle {
-  position: absolute;
+  position: fixed;
   top: 10px;
   left: 180px; /* Adjusted to align with sidebar */
   background-color: #a0c1d1;
