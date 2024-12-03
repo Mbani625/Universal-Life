@@ -396,6 +396,7 @@ body.dark-mode .control-buttons button:hover {
 
 .theme-toggle .icon {
   font-size: 24px;
+  margin: 0px 20px;
   padding: 0 8px;
   transition: filter 0.3s ease;
 }
