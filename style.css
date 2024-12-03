@@ -159,23 +159,6 @@ body.dark-mode #sidebar button:hover {
   transition: transform 0.3s ease;
 }
 
-/* Medium screens (tablets in landscape) */
-@media (max-width: 900px) {
-  #players-container {
-    width: 70%; /* Scale to 90% width */
-    grid-template-columns: repeat(2, 1fr); /* Still two columns */
-  }
-}
-
-/* Small screens (phones in landscape and portrait) */
-@media (max-width: 600px) {
-  #players-container {
-    width: 80%; /* Scale to full width on small screens */
-    grid-template-columns: 1fr; /* Stack vertically */
-    padding: 10px;
-  }
-}
-
 /* Countdown display styling without background overlay */
 #countdown-display {
   font-size: 48px;
@@ -191,17 +174,43 @@ body.dark-mode #sidebar button:hover {
   z-index: 1; /* Lower z-index to stay behind the button */
 }
 
-/* Player styling */
+/* General player container styling */
 .player {
   background-color: #ffffff;
   border: 2px solid #d9e2ec;
   border-radius: 12px;
-  padding: 5px 20px;
+  padding: 5px 10px; /* Adjust padding for smaller devices */
   text-align: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  max-width: 600px;
-  width: 100%;
+  max-width: 100%; /* Ensure it does not overflow */
+  width: 100%; /* Full width by default */
 }
+
+/* Adjust player container for small screens */
+@media (max-width: 600px) {
+  #players-container {
+    width: 100%; /* Full width for container */
+    grid-template-columns: 1fr; /* Stack vertically */
+  }
+
+  .player {
+    padding: 5px; /* Reduce padding */
+    font-size: 14px; /* Adjust text size for readability */
+  }
+}
+
+/* Landscape mode adjustments for small devices */
+@media (max-width: 900px) and (orientation: landscape) {
+  #players-container {
+    grid-template-columns: repeat(2, 1fr); /* Fit two players per row */
+  }
+
+  .player {
+    padding: 10px;
+    font-size: 16px;
+  }
+}
+
 
 
 .player h3 {
