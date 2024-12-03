@@ -74,7 +74,7 @@ body.dark-mode .control-buttons button:hover {
 #sidebar-toggle {
   position: fixed;
   top: 10px;
-  left: 250px; /* Adjusted to align with sidebar */
+  left: 260px; /* Adjusted to align with sidebar */
   background-color: #a0c1d1;
   border: none;
   color: #333;
