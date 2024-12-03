@@ -162,7 +162,7 @@ body.dark-mode #sidebar button:hover {
 /* Medium screens (tablets in landscape) */
 @media (max-width: 900px) {
   #players-container {
-    width: 80%; /* Scale to 90% width */
+    width: 70%; /* Scale to 90% width */
     grid-template-columns: repeat(2, 1fr); /* Still two columns */
   }
 }
@@ -170,7 +170,7 @@ body.dark-mode #sidebar button:hover {
 /* Small screens (phones in landscape and portrait) */
 @media (max-width: 600px) {
   #players-container {
-    width: 90%; /* Scale to full width on small screens */
+    width: 80%; /* Scale to full width on small screens */
     grid-template-columns: 1fr; /* Stack vertically */
     padding: 10px;
   }
