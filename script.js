@@ -39,6 +39,10 @@ function setGameMode(mode) {
       startingLifeTotal = 8000;
       incrementValue = 50;
       break;
+    case "sorcery":
+      startingLifeTotal = 20;
+      incrementValue = 1;
+      break;
   }
 
   initializePlayers(
