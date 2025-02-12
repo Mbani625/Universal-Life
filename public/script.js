@@ -4,6 +4,63 @@ let startingLifeTotal = 20;
 let sidebarToggle = document.getElementById("sidebar-toggle");
 let sidebarVisibleTimeout;
 
+let currentLifeElement;
+let isAddition = true; // Default to adding
+
+function openLifeAdjustmentPopup(lifePointsElement) {
+  currentLifeElement = lifePointsElement; // Store the element being adjusted
+  document.getElementById("life-adjust-popup").style.display = "flex";
+
+  // Disable scrolling when popup is open
+  document.body.classList.add("popup-open");
+
+  // Reset the input field
+  document.getElementById("life-adjust-input").value = "";
+  isAddition = true;
+
+  // Set button selection state
+  document.getElementById("plus-choice").classList.add("selected");
+  document.getElementById("minus-choice").classList.remove("selected");
+}
+
+// Event listeners for the popup buttons
+document.getElementById("plus-choice").addEventListener("click", () => {
+  isAddition = true;
+  document.getElementById("plus-choice").classList.add("selected");
+  document.getElementById("minus-choice").classList.remove("selected");
+});
+
+document.getElementById("minus-choice").addEventListener("click", () => {
+  isAddition = false;
+  document.getElementById("minus-choice").classList.add("selected");
+  document.getElementById("plus-choice").classList.remove("selected");
+});
+
+document.getElementById("resolve-button").addEventListener("click", () => {
+  let adjustmentValue = parseInt(
+    document.getElementById("life-adjust-input").value
+  );
+
+  if (!isNaN(adjustmentValue) && adjustmentValue > 0) {
+    let currentLife = parseInt(currentLifeElement.textContent);
+    currentLife += isAddition ? adjustmentValue : -adjustmentValue;
+    currentLifeElement.textContent = Math.max(0, currentLife);
+  }
+
+  closeLifeAdjustmentPopup();
+});
+
+document
+  .getElementById("cancel-button")
+  .addEventListener("click", closeLifeAdjustmentPopup);
+
+function closeLifeAdjustmentPopup() {
+  document.getElementById("life-adjust-popup").style.display = "none";
+
+  // Re-enable scrolling when popup is closed
+  document.body.classList.remove("popup-open");
+}
+
 function toggleSidebar() {
   const sidebar = document.getElementById("sidebar");
   sidebar.classList.toggle("open"); // Toggles the sidebar visibility
@@ -81,16 +138,8 @@ function setGameMode(mode) {
       startingLifeTotal = 20;
       incrementValue = 1;
       break;
-    case "elestrals":
-      startingLifeTotal = 20;
-      incrementValue = 1;
-      break;
     case "grandarchive":
       startingLifeTotal = 15;
-      incrementValue = 1;
-      break;
-    case "battlespiritssaga":
-      startingLifeTotal = 5;
       incrementValue = 1;
       break;
   }
@@ -120,10 +169,10 @@ function createPlayerCounter(playerNumber) {
     playerDiv.classList.add("dark-mode");
   }
 
-
   const lifePoints = document.createElement("div");
   lifePoints.classList.add("life-points");
   lifePoints.textContent = startingLifeTotal;
+  lifePoints.onclick = () => openLifeAdjustmentPopup(lifePoints);
   playerDiv.appendChild(lifePoints);
 
   // Control buttons container
@@ -133,15 +182,34 @@ function createPlayerCounter(playerNumber) {
   // Add Life (+) Button
   const addButton = document.createElement("button");
   addButton.textContent = "+";
-  addButton.onmousedown = () => startAdjustingLife(lifePoints, incrementValue);
-  addButton.onmouseup = stopAdjustingLife;
+  addButton.addEventListener("mousedown", (e) =>
+    startAdjustingLife(e, lifePoints, incrementValue)
+  );
+  addButton.addEventListener(
+    "touchstart",
+    (e) => startAdjustingLife(e, lifePoints, incrementValue),
+    { passive: false }
+  );
+  addButton.addEventListener("mouseup", stopAdjustingLife);
+  addButton.addEventListener("mouseleave", stopAdjustingLife);
+  addButton.addEventListener("touchend", stopAdjustingLife);
+  addButton.addEventListener("touchcancel", stopAdjustingLife);
 
   // Subtract Life (-) Button
   const subtractButton = document.createElement("button");
   subtractButton.textContent = "-";
-  subtractButton.onmousedown = () =>
-    startAdjustingLife(lifePoints, -incrementValue);
-  subtractButton.onmouseup = stopAdjustingLife;
+  subtractButton.addEventListener("mousedown", (e) =>
+    startAdjustingLife(e, lifePoints, -incrementValue)
+  );
+  subtractButton.addEventListener(
+    "touchstart",
+    (e) => startAdjustingLife(e, lifePoints, -incrementValue),
+    { passive: false }
+  );
+  subtractButton.addEventListener("mouseup", stopAdjustingLife);
+  subtractButton.addEventListener("mouseleave", stopAdjustingLife);
+  subtractButton.addEventListener("touchend", stopAdjustingLife);
+  subtractButton.addEventListener("touchcancel", stopAdjustingLife);
 
   // Coin Flip Button
   const coinFlipButton = document.createElement("button");
@@ -173,6 +241,88 @@ function createPlayerCounter(playerNumber) {
 
   playerDiv.appendChild(controlButtons);
   document.getElementById("players-container").appendChild(playerDiv);
+}
+
+function enterManualLifeAdjustment(lifePointsElement, playerDiv) {
+  // Hide the existing life points display
+  lifePointsElement.style.display = "none";
+
+  // Create input field for number entry
+  const inputField = document.createElement("input");
+  inputField.type = "number";
+  inputField.classList.add("life-input");
+  inputField.placeholder = "Enter amount";
+
+  // Buttons for choosing add or subtract
+  const addSubtractContainer = document.createElement("div");
+  addSubtractContainer.classList.add("adjust-choice");
+
+  const plusButton = document.createElement("button");
+  plusButton.textContent = "+";
+  plusButton.classList.add("plus-choice");
+  let isAddition = true; // Default to adding
+
+  const minusButton = document.createElement("button");
+  minusButton.textContent = "-";
+  minusButton.classList.add("minus-choice");
+
+  plusButton.onclick = () => {
+    isAddition = true;
+    plusButton.classList.add("selected");
+    minusButton.classList.remove("selected");
+  };
+  minusButton.onclick = () => {
+    isAddition = false;
+    minusButton.classList.add("selected");
+    plusButton.classList.remove("selected");
+  };
+
+  addSubtractContainer.appendChild(plusButton);
+  addSubtractContainer.appendChild(minusButton);
+
+  // Resolve button
+  const resolveButton = document.createElement("button");
+  resolveButton.textContent = "Resolve";
+  resolveButton.classList.add("resolve-button");
+  resolveButton.onclick = () =>
+    resolveManualLifeAdjustment(
+      lifePointsElement,
+      inputField,
+      isAddition,
+      playerDiv
+    );
+
+  // Create a container to hold input and resolve button
+  const manualAdjustContainer = document.createElement("div");
+  manualAdjustContainer.classList.add("manual-adjust-container");
+  manualAdjustContainer.appendChild(inputField);
+  manualAdjustContainer.appendChild(addSubtractContainer);
+  manualAdjustContainer.appendChild(resolveButton);
+
+  // Add the UI to the player div
+  playerDiv.appendChild(manualAdjustContainer);
+
+  // Auto-focus the input field
+  inputField.focus();
+}
+
+function resolveManualLifeAdjustment(
+  lifePointsElement,
+  inputField,
+  isAddition,
+  playerDiv
+) {
+  let adjustmentValue = parseInt(inputField.value);
+
+  if (!isNaN(adjustmentValue) && adjustmentValue > 0) {
+    let currentLife = parseInt(lifePointsElement.textContent);
+    currentLife += isAddition ? adjustmentValue : -adjustmentValue;
+    lifePointsElement.textContent = Math.max(0, currentLife);
+  }
+
+  // Remove input UI and show life total again
+  playerDiv.querySelector(".manual-adjust-container").remove();
+  lifePointsElement.style.display = "block";
 }
 
 // Function to show coin flip result (Heads or Tails)
@@ -208,12 +358,13 @@ function adjustLifePoints(lifePointsElement, change) {
 // Hold down functionality for rapid life point adjustment
 let adjustInterval;
 
-function startAdjustingLife(lifePointsElement, change) {
-  adjustLifePoints(lifePointsElement, change);
+function startAdjustingLife(event, lifePointsElement, change) {
+  event.preventDefault(); // Prevent default mobile behavior like text highlighting
+  adjustLifePoints(lifePointsElement, change); // Apply first change immediately
   adjustInterval = setInterval(
     () => adjustLifePoints(lifePointsElement, change),
-    350
-  );
+    500
+  ); // Continue every 500ms
 }
 
 function stopAdjustingLife() {

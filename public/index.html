@@ -54,6 +54,23 @@
     <!-- Countdown display for starting player -->
     <div id="countdown-display"></div>
 
+    <!-- Life Adjustment Popup -->
+<div id="life-adjust-popup" class="popup">
+  <div class="popup-content">
+    <h3>Adjust Life Points</h3>
+    <input type="number" id="life-adjust-input" placeholder="Amount" />
+    
+    <div class="adjust-choice">
+      <button id="plus-choice" class="plus-choice selected">+</button>
+      <button id="minus-choice" class="minus-choice">-</button>
+    </div>
+    
+    <button id="resolve-button">Resolve</button>
+    <button id="cancel-button">Cancel</button>
+  </div>
+</div>
+
+
     <script src="script.js"></script>
   </body>
 </html>
