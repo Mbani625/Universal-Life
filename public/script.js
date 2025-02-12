@@ -154,9 +154,22 @@ function initializePlayers(playerCount) {
   const playersContainer = document.getElementById("players-container");
   playersContainer.innerHTML = ""; // Clear existing players
 
-  for (let i = 1; i <= playerCount; i++) {
-    createPlayerCounter(i);
+  let playerOrder = [];
+
+  if (playerCount === 2) {
+    playerOrder = [1, 2]; // Normal 1v1 setup
+  } else if (playerCount === 4) {
+    playerOrder = [1, 2, 4, 3]; // Reorder 4 and 3
+  } else {
+    for (let i = 1; i <= playerCount; i++) {
+      playerOrder.push(i); // Default ordering for other cases
+    }
   }
+
+  // Create players in the correct order
+  playerOrder.forEach((playerNumber) => {
+    createPlayerCounter(playerNumber);
+  });
 }
 
 // Function to create each player's container with updated button structure
@@ -168,6 +181,12 @@ function createPlayerCounter(playerNumber) {
   if (document.body.classList.contains("dark-mode")) {
     playerDiv.classList.add("dark-mode");
   }
+
+  // Create player number element (small number in top-left corner)
+  const playerNumberLabel = document.createElement("div");
+  playerNumberLabel.classList.add("player-number");
+  playerNumberLabel.textContent = playerNumber; // Assign unique number (1-4)
+  playerDiv.appendChild(playerNumberLabel); // Append inside THIS specific player container
 
   const lifePoints = document.createElement("div");
   lifePoints.classList.add("life-points");
