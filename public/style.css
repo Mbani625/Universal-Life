@@ -13,6 +13,10 @@ body {
   justify-content: center;
   height: 100vh;
   margin: 0;
+  background-image: url(icononly_transparent_nobuffer.png);
+  background-size: 25%;
+  background-repeat: no-repeat;
+  background-position: center;
   background-color: #f9f9f9;
   color: #333333;
   touch-action: manipulation; /* Disable double-tap zoom */
@@ -190,7 +194,7 @@ body.dark-mode #sidebar button:hover {
 /* General player container styling */
 .player {
   position: relative;
-  background-color: #ffffff;
+  background: rgba(255, 255, 255, 0.9);
   border: 2px solid #d9e2ec;
   border-radius: 12px;
   padding: 5px 10px; /* Adjust padding for smaller devices */
