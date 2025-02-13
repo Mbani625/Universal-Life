@@ -77,13 +77,13 @@ body.dark-mode .control-buttons button:hover {
 
 #sidebar-toggle {
   position: fixed;
-  top: 10px;
+  top: 5px;
   left: 310px; /* Adjusted to align with sidebar */
   background-color: #a0c1d1;
   border: none;
   color: #333;
   font-size: 28px;
-  padding: 6px 12px;
+  padding: 6px 6px;
   border-radius: 10px;
   cursor: pointer;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
@@ -104,7 +104,7 @@ body.dark-mode .control-buttons button:hover {
   color: #333333; /* Light mode text color */
   border: none;
   border-radius: 5px;
-  padding: 8px 12px;
+  padding: 8px 8px;
   cursor: pointer;
   transition: background-color 0.2s, color 0.2s;
 }
@@ -168,6 +168,128 @@ body.dark-mode #sidebar button:hover {
   max-width: 1100px;
   text-align: center;
   position: relative;
+}
+
+/* Style for player containers */
+.player-container {
+  position: relative;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: white;
+  text-align: center;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  width: 200px;
+  margin: 10px;
+  display: inline-block;
+}
+
+/* Three-dot login button */
+.player-login {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+}
+/* Universal Popup Styling */
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  z-index: 1000;
+  width: 300px;
+  max-width: 90%;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -55%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* Input fields for login/sign-up */
+.popup-content input {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+/* Buttons inside popups */
+.popup-content button {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+/* Primary button styling */
+.popup-content button:first-child {
+  background-color: #4a90e2;
+  color: white;
+}
+
+.popup-content button:first-child:hover {
+  background-color: #357ab7;
+}
+
+/* Secondary button styling */
+.popup-content button:nth-child(2) {
+  background-color: #5c5eff;
+  color: white;
+}
+
+.popup-content button:nth-child(2):hover {
+  background-color: #4a4ad6;
+}
+
+/* Cancel button styling */
+.popup-content button:last-child {
+  background-color: #ccc;
+  color: black;
+}
+
+.popup-content button:last-child:hover {
+  background-color: #b3b3b3;
+}
+
+/* Close button */
+.popup-close {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-size: 20px;
+  cursor: pointer;
+  color: #666;
+  background: none;
+  border: none;
+}
+
+.popup-close:hover {
+  color: #333;
 }
 
 /* Rotate the entire player container */
@@ -277,25 +399,16 @@ body.dark-mode .control-buttons button:hover {
 }
 
 /* Icon background images for dice and coin flip buttons */
-.coin-flip-button {
-  background-image: url("path-to-coin-icon.png"); /* Replace with actual path */
-  background-size: 75%;
-  background-position: center;
-  background-repeat: no-repeat;
+.control-buttons button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 5px;
 }
 
-.d6-button {
-  background-image: url("path-to-d6-icon.png"); /* Replace with actual path */
-  background-size: 100%;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-.d20-button {
-  background-image: url("path-to-d20-icon.png"); /* Replace with actual path */
-  background-size: 100%;
-  background-position: center;
-  background-repeat: no-repeat;
+.control-buttons img {
+  width: 45px; /* Adjust size as needed */
+  height: 45px;
 }
 
 .invertbutton {
@@ -460,88 +573,56 @@ body.dark-mode .player.selected {
 }
 
 /* Life Adjustment Popup */
-.popup {
-  display: none; /* Hidden by default */
+.life-popup {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5); /* Dim background */
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  overflow: hidden; /* Prevent scrolling */
-}
-
-.popup-content {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   background: white;
-  padding: 20px;
+  padding: 15px;
   border-radius: 10px;
-  text-align: center;
-  width: 90%; /* Adjust width to fit smaller screens */
-  max-width: 300px; /* Prevent it from getting too large */
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
-  position: relative;
-  transform: translateY(0); /* Fixes centering issues */
-}
-
-body.popup-open {
-  overflow: hidden;
-  height: 100vh;
-  touch-action: none; /* Disables touch gestures while popup is open */
-}
-
-.popup h3 {
-  margin-bottom: 10px;
-}
-
-#life-adjust-input {
-  width: 100px;
-  font-size: 18px;
   text-align: center;
+  z-index: 1000;
+}
+
+.popup-content h3 {
   margin-bottom: 10px;
 }
 
-.adjust-choice {
+.popup-content input {
+  width: 100%;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+.popup-buttons {
   display: flex;
-  justify-content: center;
-  margin-bottom: 10px;
+  justify-content: space-between;
 }
 
-.plus-choice,
-.minus-choice {
-  width: 57.5px;
-  height: 57.5px;
+.popup-buttons button {
+  flex: 1;
   margin: 5px;
-  font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
-  color: #333333; /* Light mode text color */
-  background-color: #c0d6e4; /* Light mode background */
-  border: none;
-  border-radius: 10px;
-  transition: background-color 0.2s, color 0.2s, transform 0.1s;
-}
-
-.plus-choice:hover,
-.minus-choice:hover,
-#resolve-button:hover,
-#cancel-button:hover {
-  background-color: #5c5eff;
-}
-
-#resolve-button,
-#cancel-button {
-  color: #333333; /* Light mode text color */
-  background-color: #c0d6e4; /* Light mode background */
-  padding: 5px 10px;
-  font-size: 16px;
-  font-weight: bolder;
+  padding: 8px;
   cursor: pointer;
   border: none;
   border-radius: 5px;
-  margin: 5px;
+}
+
+.popup-buttons button:nth-child(1) {
+  background-color: green;
+  color: white;
+}
+
+.popup-buttons button:nth-child(2) {
+  background-color: red;
+  color: white;
+}
+
+.popup-buttons button:nth-child(3) {
+  background-color: gray;
+  color: white;
 }
 
 /* Player number label */

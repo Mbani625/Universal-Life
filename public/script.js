@@ -1,514 +1,329 @@
-let currentGameMode = "mtg"; // Default to Magic the Gathering
-let incrementValue = 1;
+// Import Firebase authentication functions
+import { signUp, login } from "./auth.js";
+
+let currentGameMode = "mtg";
 let startingLifeTotal = 20;
-let sidebarToggle = document.getElementById("sidebar-toggle");
-let sidebarVisibleTimeout;
 
-let currentLifeElement;
-let isAddition = true; // Default to adding
+// 🎮 Game formats and settings
+const gameFormats = {
+  mtg: [
+    { name: "Standard", players: 2, life: 20 },
+    { name: "Modern", players: 2, life: 20 },
+    { name: "Legacy", players: 2, life: 20 },
+    { name: "Vintage", players: 2, life: 20 },
+    { name: "Brawl", players: 2, life: 30 },
+    { name: "Commander", players: 4, life: 40 },
+  ],
+  lorcana: [{ name: "Standard", players: 2, life: 0 }],
+  yugioh: [
+    { name: "Advanced", players: 2, life: 8000 },
+    { name: "Traditional", players: 2, life: 8000 },
+    { name: "Domain", players: 4, life: 8000 },
+  ],
+  sorcery: [
+    { name: "Standard", players: 2, life: 20 },
+    { name: "Multiplayer", players: 4, life: 20 },
+  ],
+  grandarchive: [{ name: "Standard", players: 2, life: 15 }],
+};
 
-function openLifeAdjustmentPopup(lifePointsElement) {
-  currentLifeElement = lifePointsElement; // Store the element being adjusted
-  document.getElementById("life-adjust-popup").style.display = "flex";
-
-  // Disable scrolling when popup is open
-  document.body.classList.add("popup-open");
-
-  // Reset the input field
-  document.getElementById("life-adjust-input").value = "";
-  isAddition = true;
-
-  // Set button selection state
-  document.getElementById("plus-choice").classList.add("selected");
-  document.getElementById("minus-choice").classList.remove("selected");
+// 🎮 Game Selection & Format Toggles
+function showGameSelection() {
+  toggleVisibility("game-mode-buttons", true);
+  toggleVisibility("format-buttons", false);
+  toggleVisibility("back-button", false);
 }
+window.showGameSelection = showGameSelection;
 
-// Event listeners for the popup buttons
-document.getElementById("plus-choice").addEventListener("click", () => {
-  isAddition = true;
-  document.getElementById("plus-choice").classList.add("selected");
-  document.getElementById("minus-choice").classList.remove("selected");
-});
+function showFormatOptions(game) {
+  const formatButtons = document.getElementById("format-buttons");
+  formatButtons.innerHTML = "";
+  currentGameMode = game;
 
-document.getElementById("minus-choice").addEventListener("click", () => {
-  isAddition = false;
-  document.getElementById("minus-choice").classList.add("selected");
-  document.getElementById("plus-choice").classList.remove("selected");
-});
-
-document.getElementById("resolve-button").addEventListener("click", () => {
-  let adjustmentValue = parseInt(
-    document.getElementById("life-adjust-input").value
-  );
-
-  if (!isNaN(adjustmentValue) && adjustmentValue > 0) {
-    let currentLife = parseInt(currentLifeElement.textContent);
-    currentLife += isAddition ? adjustmentValue : -adjustmentValue;
-    currentLifeElement.textContent = Math.max(0, currentLife);
-  }
-
-  closeLifeAdjustmentPopup();
-});
-
-document
-  .getElementById("cancel-button")
-  .addEventListener("click", closeLifeAdjustmentPopup);
-
-function closeLifeAdjustmentPopup() {
-  document.getElementById("life-adjust-popup").style.display = "none";
-
-  // Re-enable scrolling when popup is closed
-  document.body.classList.remove("popup-open");
-}
-
-function toggleSidebar() {
-  const sidebar = document.getElementById("sidebar");
-  sidebar.classList.toggle("open"); // Toggles the sidebar visibility
-}
-
-// Function to hide sidebar toggle after 3 seconds
-function hideSidebarToggle() {
-  sidebarToggle.style.opacity = 0;
-  sidebarToggle.style.pointerEvents = "none"; // Disable interactions
-}
-
-// Function to show sidebar toggle
-function showSidebarToggle() {
-  sidebarToggle.style.opacity = 1;
-  sidebarToggle.style.pointerEvents = "auto"; // Re-enable interactions
-}
-
-// Reset the timer whenever the user interacts with the page
-function resetSidebarToggleTimer() {
-  clearTimeout(sidebarVisibleTimeout);
-  showSidebarToggle();
-  sidebarVisibleTimeout = setTimeout(hideSidebarToggle, 3000);
-}
-
-// Initial setup
-document.addEventListener("DOMContentLoaded", () => {
-  resetSidebarToggleTimer();
-
-  // Add a click listener to the document
-  document.addEventListener("click", (event) => {
-    // Check if the click is outside the player container
-    if (!event.target.closest("#players-container")) {
-      resetSidebarToggleTimer();
-    }
+  gameFormats[game].forEach((format) => {
+    let btn = document.createElement("button");
+    btn.textContent = format.name;
+    btn.onclick = () => setGameMode(format);
+    formatButtons.appendChild(btn);
   });
-});
 
-// Initialize players on page load
-document.addEventListener("DOMContentLoaded", () => {
-  initializePlayers(2); // Default to 1v1
-});
+  toggleVisibility("game-mode-buttons", false);
+  toggleVisibility("format-buttons", true);
+  toggleVisibility("back-button", true);
+}
+window.showFormatOptions = showFormatOptions;
 
-// Prevent double-tap zoom on mobile
-document.addEventListener(
-  "touchstart",
-  function preventDoubleTapZoom(event) {
-    if (event.touches.length > 1) {
-      event.preventDefault();
-    }
-  },
-  { passive: false }
-);
+function setGameMode(format) {
+  startingLifeTotal = format.life;
+  initializePlayers(format.players);
+}
+window.setGameMode = setGameMode;
 
-function setGameMode(mode) {
-  currentGameMode = mode;
-
-  switch (mode) {
-    case "mtg":
-      startingLifeTotal = 20;
-      incrementValue = 1;
-      break;
-    case "commander":
-      startingLifeTotal = 40;
-      incrementValue = 1;
-      break;
-    case "lorcana":
-      startingLifeTotal = 0;
-      incrementValue = 1;
-      break;
-    case "yugioh":
-      startingLifeTotal = 8000;
-      incrementValue = 50;
-      break;
-    case "sorcery":
-      startingLifeTotal = 20;
-      incrementValue = 1;
-      break;
-    case "grandarchive":
-      startingLifeTotal = 15;
-      incrementValue = 1;
-      break;
-  }
-
-  initializePlayers(
-    document.getElementById("players-container").children.length || 2
-  );
+// 🎭 Toggle Utility Function
+function toggleVisibility(elementId, show) {
+  const element = document.getElementById(elementId);
+  if (element) element.style.display = show ? "block" : "none";
 }
 
-// Initialize players
+// 🏆 Player Setup
 function initializePlayers(playerCount) {
   const playersContainer = document.getElementById("players-container");
-  playersContainer.innerHTML = ""; // Clear existing players
+  const tableBody = document.getElementById("table-body");
 
-  let playerOrder = [];
+  if (!playersContainer || !tableBody) {
+    console.error(
+      "Error: Players container or table body not found. Creating missing elements..."
+    );
 
-  if (playerCount === 2) {
-    playerOrder = [1, 2]; // Normal 1v1 setup
-  } else if (playerCount === 4) {
-    playerOrder = [1, 2, 4, 3]; // Reorder 4 and 3
-  } else {
-    for (let i = 1; i <= playerCount; i++) {
-      playerOrder.push(i); // Default ordering for other cases
+    if (!playersContainer) {
+      const newPlayersContainer = document.createElement("div");
+      newPlayersContainer.id = "players-container";
+      document.body.appendChild(newPlayersContainer);
+    }
+
+    if (!tableBody) {
+      const newTableBody = document.createElement("tbody");
+      newTableBody.id = "table-body";
+      const table = document.querySelector("table");
+      if (table) {
+        table.appendChild(newTableBody);
+      } else {
+        console.error("Error: Table element not found in document.");
+        return;
+      }
     }
   }
 
-  // Create players in the correct order
-  playerOrder.forEach((playerNumber) => {
-    createPlayerCounter(playerNumber);
-  });
-}
+  // Clear existing players
+  playersContainer.innerHTML = "";
+  tableBody.innerHTML = "";
 
-// Function to create each player's container with updated button structure
-function createPlayerCounter(playerNumber) {
-  const playerDiv = document.createElement("div");
-  playerDiv.classList.add("player");
-
-  // Apply the current theme to the new player container
-  if (document.body.classList.contains("dark-mode")) {
-    playerDiv.classList.add("dark-mode");
+  let playerOrder = [];
+  if (playerCount === 4) {
+    playerOrder = [1, 2, 4, 3]; // Corrected 4-player order
+  } else {
+    for (let i = 1; i <= playerCount; i++) {
+      playerOrder.push(i);
+    }
   }
 
-  // Create player number element (small number in top-left corner)
-  const playerNumberLabel = document.createElement("div");
-  playerNumberLabel.classList.add("player-number");
-  playerNumberLabel.textContent = playerNumber; // Assign unique number (1-4)
-  playerDiv.appendChild(playerNumberLabel); // Append inside THIS specific player container
+  playerOrder.forEach((id) => {
+    createPlayerCounter(id);
+    addPlayerToTable(id);
+  });
+}
+window.initializePlayers = initializePlayers;
 
-  const lifePoints = document.createElement("div");
-  lifePoints.classList.add("life-points");
-  lifePoints.textContent = startingLifeTotal;
-  lifePoints.onclick = () => openLifeAdjustmentPopup(lifePoints);
-  playerDiv.appendChild(lifePoints);
+function resetGameBoard() {
+  const tableBody = document.getElementById("table-body");
+  if (tableBody) {
+    tableBody.innerHTML = ""; // 🔹 Clear existing table rows when switching games
+  }
+}
 
-  // Control buttons container
-  const controlButtons = document.createElement("div");
-  controlButtons.classList.add("control-buttons");
+function createPlayerCounter(playerId) {
+  const playerDiv = document.createElement("div");
+  playerDiv.classList.add("player");
+  playerDiv.dataset.playerId = playerId;
 
-  // Add Life (+) Button
-  const addButton = document.createElement("button");
-  addButton.textContent = "+";
-  addButton.addEventListener("mousedown", (e) =>
-    startAdjustingLife(e, lifePoints, incrementValue)
-  );
-  addButton.addEventListener(
-    "touchstart",
-    (e) => startAdjustingLife(e, lifePoints, incrementValue),
-    { passive: false }
-  );
-  addButton.addEventListener("mouseup", stopAdjustingLife);
-  addButton.addEventListener("mouseleave", stopAdjustingLife);
-  addButton.addEventListener("touchend", stopAdjustingLife);
-  addButton.addEventListener("touchcancel", stopAdjustingLife);
+  playerDiv.innerHTML = `
+    <div class="player-number">P${playerId}</div>
+    <div class="life-points" onclick="openLifePointPopup(${playerId})">${startingLifeTotal}</div>
+    <div class="control-buttons">
+      <button class="adjust-life" data-change="1">+</button>
+      <button class="adjust-life" data-change="-1">-</button>
 
-  // Subtract Life (-) Button
-  const subtractButton = document.createElement("button");
-  subtractButton.textContent = "-";
-  subtractButton.addEventListener("mousedown", (e) =>
-    startAdjustingLife(e, lifePoints, -incrementValue)
-  );
-  subtractButton.addEventListener(
-    "touchstart",
-    (e) => startAdjustingLife(e, lifePoints, -incrementValue),
-    { passive: false }
-  );
-  subtractButton.addEventListener("mouseup", stopAdjustingLife);
-  subtractButton.addEventListener("mouseleave", stopAdjustingLife);
-  subtractButton.addEventListener("touchend", stopAdjustingLife);
-  subtractButton.addEventListener("touchcancel", stopAdjustingLife);
+      <button class="coin-flip" data-player="${playerId}">
+        <img src="path-to-coin-icon.png" alt="Coin Flip">
+      </button>
 
-  // Coin Flip Button
-  const coinFlipButton = document.createElement("button");
-  coinFlipButton.classList.add("coin-flip-button");
-  coinFlipButton.onclick = () => showCoinFlipResult(playerDiv);
+      <button class="dice-roll" data-dice="6" data-player="${playerId}">
+        <img src="path-to-d6-icon.png" alt="Roll D6">
+      </button>
 
-  // D6 Roll Button
-  const d6Button = document.createElement("button");
-  d6Button.classList.add("dice-button", "d6-button");
-  d6Button.onclick = () => rollDice(6, playerDiv);
+      <button class="dice-roll" data-dice="20" data-player="${playerId}">
+        <img src="path-to-d20-icon.png" alt="Roll D20">
+      </button>
 
-  // D20 Roll Button
-  const d20Button = document.createElement("button");
-  d20Button.classList.add("dice-button", "d20-button");
-  d20Button.onclick = () => rollDice(20, playerDiv);
+      <button class="invert" onclick="invertPlayerContainer(${playerId})">⇅</button>
+      <button class="player-login" onclick="openLoginPopup(${playerId})">⋮</button>
+    </div>
+    <p class="player-name">Guest</p>
+  `;
 
-  // Invert Button
-  const invertButton = document.createElement("button");
-  invertButton.classList.add("invertbutton");
-  invertButton.onclick = () => toggleInversion(playerDiv);
-
-  // Append all buttons to controlButtons container
-  controlButtons.appendChild(addButton);
-  controlButtons.appendChild(subtractButton);
-  controlButtons.appendChild(coinFlipButton);
-  controlButtons.appendChild(d6Button);
-  controlButtons.appendChild(d20Button);
-  controlButtons.appendChild(invertButton);
-
-  playerDiv.appendChild(controlButtons);
   document.getElementById("players-container").appendChild(playerDiv);
 }
 
-function enterManualLifeAdjustment(lifePointsElement, playerDiv) {
-  // Hide the existing life points display
-  lifePointsElement.style.display = "none";
+// 🎲 Event Listeners for Coin Flip and Dice Rolls
+document.addEventListener("click", (e) => {
+  const target = e.target.closest("button");
 
-  // Create input field for number entry
-  const inputField = document.createElement("input");
-  inputField.type = "number";
-  inputField.classList.add("life-input");
-  inputField.placeholder = "Enter amount";
+  if (!target) return;
 
-  // Buttons for choosing add or subtract
-  const addSubtractContainer = document.createElement("div");
-  addSubtractContainer.classList.add("adjust-choice");
-
-  const plusButton = document.createElement("button");
-  plusButton.textContent = "+";
-  plusButton.classList.add("plus-choice");
-  let isAddition = true; // Default to adding
-
-  const minusButton = document.createElement("button");
-  minusButton.textContent = "-";
-  minusButton.classList.add("minus-choice");
-
-  plusButton.onclick = () => {
-    isAddition = true;
-    plusButton.classList.add("selected");
-    minusButton.classList.remove("selected");
-  };
-  minusButton.onclick = () => {
-    isAddition = false;
-    minusButton.classList.add("selected");
-    plusButton.classList.remove("selected");
-  };
-
-  addSubtractContainer.appendChild(plusButton);
-  addSubtractContainer.appendChild(minusButton);
-
-  // Resolve button
-  const resolveButton = document.createElement("button");
-  resolveButton.textContent = "Resolve";
-  resolveButton.classList.add("resolve-button");
-  resolveButton.onclick = () =>
-    resolveManualLifeAdjustment(
-      lifePointsElement,
-      inputField,
-      isAddition,
-      playerDiv
-    );
-
-  // Create a container to hold input and resolve button
-  const manualAdjustContainer = document.createElement("div");
-  manualAdjustContainer.classList.add("manual-adjust-container");
-  manualAdjustContainer.appendChild(inputField);
-  manualAdjustContainer.appendChild(addSubtractContainer);
-  manualAdjustContainer.appendChild(resolveButton);
-
-  // Add the UI to the player div
-  playerDiv.appendChild(manualAdjustContainer);
-
-  // Auto-focus the input field
-  inputField.focus();
-}
-
-function resolveManualLifeAdjustment(
-  lifePointsElement,
-  inputField,
-  isAddition,
-  playerDiv
-) {
-  let adjustmentValue = parseInt(inputField.value);
-
-  if (!isNaN(adjustmentValue) && adjustmentValue > 0) {
-    let currentLife = parseInt(lifePointsElement.textContent);
-    currentLife += isAddition ? adjustmentValue : -adjustmentValue;
-    lifePointsElement.textContent = Math.max(0, currentLife);
+  if (target.classList.contains("coin-flip")) {
+    const playerId = target.getAttribute("data-player");
+    showCoinFlipResult(playerId);
   }
 
-  // Remove input UI and show life total again
-  playerDiv.querySelector(".manual-adjust-container").remove();
-  lifePointsElement.style.display = "block";
+  if (target.classList.contains("dice-roll")) {
+    const playerId = target.getAttribute("data-player");
+    const diceType = parseInt(target.getAttribute("data-dice"));
+    rollDice(diceType, playerId);
+  }
+});
+
+function updatePlayerName(playerId, username) {
+  const playerNameElement = document.querySelector(
+    `[data-player-id='${playerId}'] .player-name`
+  );
+  if (playerNameElement) {
+    playerNameElement.textContent = username;
+  }
+}
+window.updatePlayerName = updatePlayerName;
+
+function openLifePointPopup(playerId) {
+  closePopup(); // 🔹 Ensure no other popups exist
+
+  const existingPopup = document.querySelector(".life-popup");
+  if (existingPopup) return; // 🔹 Prevent multiple popups from being created
+
+  const popup = document.createElement("div");
+  popup.classList.add("popup", "life-popup"); // 🔹 Use universal "popup" class
+  popup.innerHTML = `
+    <div class="popup-content">
+      <h3>Adjust Life Points</h3>
+      <input type="number" id="life-input" placeholder="Enter amount">
+      <div class="popup-buttons">
+        <button onclick="adjustLifeFromInput(${playerId}, 'add')">Add</button>
+        <button onclick="adjustLifeFromInput(${playerId}, 'subtract')">Subtract</button>
+        <button onclick="closePopup()">Cancel</button>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(popup);
+}
+window.openLifePointPopup = openLifePointPopup;
+
+function adjustLifeFromInput(playerId, operation) {
+  const inputField = document.getElementById("life-input");
+  if (!inputField) return;
+
+  let value = parseInt(inputField.value);
+  if (isNaN(value) || value <= 0) return; // Ignore invalid inputs
+
+  const lifePointsElement = document.querySelector(
+    `[data-player-id='${playerId}'] .life-points`
+  );
+  if (!lifePointsElement) return;
+
+  let currentLife = parseInt(lifePointsElement.textContent);
+  let newLife = operation === "add" ? currentLife + value : currentLife - value;
+
+  lifePointsElement.textContent = Math.max(0, newLife); // Prevent negative LP
+  closePopup(); // 🔹 Close the popup after updating life points
+}
+window.adjustLifeFromInput = adjustLifeFromInput;
+
+function invertPlayerContainer(playerId) {
+  const playerDiv = document.querySelector(`[data-player-id='${playerId}']`);
+
+  if (!playerDiv) return;
+
+  // Toggle a CSS class to rotate the player container
+  playerDiv.classList.toggle("inverted");
+}
+window.invertPlayerContainer = invertPlayerContainer;
+
+function addPlayerToTable(playerId) {
+  const tableBody = document.getElementById("table-body");
+  if (!tableBody) return;
+
+  let row = document.createElement("tr");
+  row.dataset.playerId = playerId;
+  row.innerHTML = `
+    <td>Player ${playerId}</td>
+    <td class="player-life">${startingLifeTotal}</td>
+    <td>
+      <button onclick="adjustLifePoints(${playerId}, 1)">+</button>
+      <button onclick="adjustLifePoints(${playerId}, -1)">-</button>
+    </td>
+  `;
+  tableBody.appendChild(row);
 }
 
-// Function to show coin flip result (Heads or Tails)
-function showCoinFlipResult(playerDiv) {
+// 🎲 Life Point Adjustments
+function adjustLifePoints(playerId, change) {
+  const playerDiv = document.querySelector(
+    `[data-player-id='${playerId}'] .life-points`
+  );
+  const tableLife = document.querySelector(
+    `tr[data-player-id='${playerId}'] .player-life`
+  );
+
+  if (playerDiv) {
+    let newLife = Math.max(0, parseInt(playerDiv.textContent) + change);
+    playerDiv.textContent = newLife;
+    if (tableLife) tableLife.textContent = newLife;
+  }
+}
+window.adjustLifePoints = adjustLifePoints;
+
+// 🔄 Sidebar & Theme Toggle
+function toggleSidebar() {
+  document.getElementById("sidebar").classList.toggle("open");
+}
+window.toggleSidebar = toggleSidebar;
+
+function toggleDarkMode() {
+  document.body.classList.toggle("dark-mode");
+  localStorage.setItem(
+    "darkMode",
+    document.body.classList.contains("dark-mode")
+  );
+}
+window.toggleDarkMode = toggleDarkMode;
+
+document.addEventListener("DOMContentLoaded", () => {
+  if (localStorage.getItem("darkMode") === "true")
+    document.body.classList.add("dark-mode");
+  showGameSelection();
+});
+
+function closePopup() {
+  document.querySelectorAll(".popup").forEach((popup) => {
+    popup.remove(); // 🔹 Removes any open popup
+  });
+}
+window.closePopup = closePopup;
+
+function showCoinFlipResult(playerId) {
+  const playerDiv = document.querySelector(`[data-player-id='${playerId}']`);
+  if (!playerDiv) return;
+
   const result = Math.random() < 0.5 ? "Heads" : "Tails";
   displayResult(playerDiv, `Coin Flip: ${result}`);
 }
+window.showCoinFlipResult = showCoinFlipResult;
 
-// Roll the selected dice (D6 or D20) and display result
-function rollDice(diceType, playerDiv) {
+function rollDice(diceType, playerId) {
+  const playerDiv = document.querySelector(`[data-player-id='${playerId}']`);
+  if (!playerDiv) return;
+
   const result = Math.floor(Math.random() * diceType) + 1;
-  displayResult(playerDiv, `Dice Roll (D${diceType}): ${result}`);
+  displayResult(playerDiv, `D${diceType}: ${result}`);
 }
+window.rollDice = rollDice;
 
-// Function to display result under the player's container
 function displayResult(playerDiv, message) {
   let resultDisplay = playerDiv.querySelector(".result-display");
+
   if (!resultDisplay) {
     resultDisplay = document.createElement("div");
     resultDisplay.classList.add("result-display");
     playerDiv.appendChild(resultDisplay);
   }
+
   resultDisplay.textContent = message;
 }
-
-// Update life points with pulse animation
-function adjustLifePoints(lifePointsElement, change) {
-  let currentLife = parseInt(lifePointsElement.textContent);
-  currentLife += change;
-  lifePointsElement.textContent = Math.max(0, currentLife);
-}
-
-// Hold down functionality for rapid life point adjustment
-let adjustInterval;
-
-function startAdjustingLife(event, lifePointsElement, change) {
-  event.preventDefault(); // Prevent default mobile behavior like text highlighting
-  adjustLifePoints(lifePointsElement, change); // Apply first change immediately
-  adjustInterval = setInterval(
-    () => adjustLifePoints(lifePointsElement, change),
-    500
-  ); // Continue every 500ms
-}
-
-function stopAdjustingLife() {
-  clearInterval(adjustInterval);
-}
-
-function toggleInversion(playerDiv) {
-  playerDiv.classList.toggle("inverted");
-}
-
-// Randomize and select the starting player by highlighting each in succession
-function startRandomPlayerSelection() {
-  const countdownDisplay = document.getElementById("countdown-display");
-  countdownDisplay.style.opacity = 1; // Make countdown visible
-  countdownDisplay.style.zIndex = 1; // Keep countdown behind the button
-
-  const players = document.querySelectorAll(".player");
-  let randomIndex = 0;
-  const highlightDuration = 250; // Duration for each player highlight (0.25 seconds)
-  const totalDuration = 3000; // Total selection duration (3 seconds)
-
-  // Darken all players initially
-  players.forEach((player) => player.classList.add("darkened"));
-
-  let elapsed = 0;
-
-  // Interval to randomly highlight players one by one
-  const interval = setInterval(() => {
-    // Remove highlight from previous player
-    if (players[randomIndex]) {
-      players[randomIndex].classList.remove("selected");
-    }
-
-    // Select a new random player index
-    randomIndex = Math.floor(Math.random() * players.length);
-    players[randomIndex].classList.add("selected");
-
-    elapsed += highlightDuration;
-
-    if (elapsed >= totalDuration) {
-      clearInterval(interval);
-      finalizeStartingPlayer(players[randomIndex]);
-    }
-  }, highlightDuration);
-}
-
-function finalizeStartingPlayer(player) {
-  const countdownDisplay = document.getElementById("countdown-display");
-
-  // Reset temporary classes but retain the current theme
-  document.querySelectorAll(".player").forEach((p) => {
-    p.classList.remove("darkened", "selected", "fade-light", "fade-dark");
-    if (document.body.classList.contains("dark-mode")) {
-      p.classList.add("dark-mode");
-    } else {
-      p.classList.remove("dark-mode");
-    }
-  });
-
-  player.classList.add("selected");
-
-  // Hide countdown display after a short delay
-  setTimeout(() => {
-    countdownDisplay.style.opacity = 0;
-  }, 3000);
-
-  // Start the appropriate fade effect based on the theme
-  const isDarkMode = document.body.classList.contains("dark-mode");
-  setTimeout(() => {
-    player.classList.add(isDarkMode ? "fade-dark" : "fade-light");
-  }, 2000);
-
-  // Ensure theme consistency after animation
-  player.addEventListener(
-    "animationend",
-    () => {
-      if (isDarkMode) {
-        player.classList.add("dark-mode");
-      } else {
-        player.classList.remove("dark-mode");
-      }
-    },
-    { once: true }
-  );
-}
-
-function toggleDarkMode() {
-  const isDarkMode = document.body.classList.toggle("dark-mode");
-
-  // Toggle dark mode classes on necessary elements
-  document.getElementById("sidebar").classList.toggle("dark-mode", isDarkMode);
-  document
-    .getElementById("countdown-display")
-    .classList.toggle("dark-mode", isDarkMode);
-
-  // Temporarily remove the selected class from players to reset the theme correctly
-  const selectedPlayer = document.querySelector(".player.selected");
-  if (selectedPlayer) selectedPlayer.classList.remove("selected");
-
-  // Apply dark mode styling to all player containers and buttons
-  document.querySelectorAll(".player").forEach((player) => {
-    player.classList.toggle("dark-mode", isDarkMode);
-  });
-
-  document.querySelectorAll(".control-buttons button").forEach((button) => {
-    button.classList.toggle("dark-mode", isDarkMode);
-  });
-
-  // Reapply the selected class to the originally selected player after theme toggle
-  if (selectedPlayer) selectedPlayer.classList.add("selected");
-
-  // Save user preference
-  localStorage.setItem("darkMode", isDarkMode ? "enabled" : "disabled");
-}
-
-// Load the user's preference or default to light mode on page load
-document.addEventListener("DOMContentLoaded", () => {
-  const darkModePreference = localStorage.getItem("darkMode");
-  const themeToggle = document.getElementById("theme-toggle");
-
-  if (darkModePreference === "enabled") {
-    document.body.classList.add("dark-mode");
-    themeToggle.checked = true;
-    toggleDarkMode();
-  } else {
-    themeToggle.checked = false;
-  }
-});
