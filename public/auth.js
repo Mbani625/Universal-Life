@@ -27,13 +27,13 @@ let authChecked = false;
 
 // 🔹 Function to handle login (fetch username from Firestore)
 async function loginHandler(playerId) {
-  const usernameInput = document.getElementById("login-username").value;
+  const username = document.getElementById("login-username").value;
   const password = document.getElementById("login-password").value;
 
   try {
-    // 🔹 Query Firestore to find the user document with this username
+    // 🔹 Get email from Firestore based on username
     const usersRef = collection(db, "users");
-    const q = query(usersRef, where("username", "==", usernameInput));
+    const q = query(usersRef, where("username", "==", username));
     const querySnapshot = await getDocs(q);
 
     if (querySnapshot.empty) {
@@ -41,12 +41,10 @@ async function loginHandler(playerId) {
       return;
     }
 
-    // 🔹 Retrieve the first matching document (username should be unique)
     const userDoc = querySnapshot.docs[0];
-    const userData = userDoc.data();
-    const email = userData.email; // Get the associated email
+    const email = userDoc.data().email; // Get associated email
 
-    // 🔹 Log in with email (since Firebase Auth requires an email)
+    // 🔹 Log in using email & password (NO popups)
     const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
@@ -54,8 +52,7 @@ async function loginHandler(playerId) {
     );
     const user = userCredential.user;
 
-    // Update the player container with the username
-    updatePlayerName(playerId, userData.username);
+    updatePlayerName(playerId, userDoc.data().username);
 
     closePopup();
   } catch (error) {
